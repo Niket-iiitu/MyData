@@ -1,0 +1,31 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background-color: black;
+}
+
+.App {
+  height: 100%;
+  justify-content: center;
+  color: blue;
+  font-size: 2rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
