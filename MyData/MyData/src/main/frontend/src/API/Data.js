@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '../config/constants';
 
-export async function fetchTiles(filter = 'all') {
+export async function fetchTiles(filter = 'Default') {
   try {
     const response = await fetch(`${API_BASE_URL}/tileList`, {
       method: 'POST',

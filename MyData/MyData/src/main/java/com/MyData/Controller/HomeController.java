@@ -1,42 +1,36 @@
 package com.MyData.Controller;
 
 import com.MyData.Dto.TileDataDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.MyData.Service.TileDataService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class HomeController {
+    @Autowired
+    TileDataService tileDataService;
+
     @GetMapping(value = "/ping")
     private String pingCheck(){
         return "Server Active";
     }
 
     @PostMapping(value = "/tileList")
-    private List<TileDataDto> fetchTileList(String filter){
+    private List<TileDataDto> fetchTileList(@RequestBody Map<String, String> requestBody){
+        String filter = requestBody.get("filter");
         List<TileDataDto> sampelList = new ArrayList<>();
-        TileDataDto ele1 = new TileDataDto();
-        ele1.setTitle("Tittle1");
-        ele1.setCategory("Default");
-        List<String> tags1 = new ArrayList<>();
-        tags1.add("Home");
-        tags1.add("Shop");
-        ele1.setTags(tags1);
-        ele1.setData("Hellow World");
-        sampelList.add(ele1);
 
-        TileDataDto ele2 = new TileDataDto();
-        ele2.setTitle("Tittle2");
-        ele2.setCategory("Default");
-        List<String> tags2 = new ArrayList<>();
-        tags2.add("Home");
-        tags2.add("Shop");
-        ele2.setTags(tags2);
-        ele2.setData("Hellow World");
-        sampelList.add(ele2);
+        try{
+            sampelList = tileDataService.getTileDetailsByUserAndFilter("1001",filter);
+        }
+        catch (Exception e){
+            System.out.println("[ERROR] HomeController fetchTileList: Error occurred while fetching data");
+            e.printStackTrace();
+        }
 
         return sampelList;
     }
