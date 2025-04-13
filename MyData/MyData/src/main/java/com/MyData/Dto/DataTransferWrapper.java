@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class DataTransferWrapper {
     String errorMessage;
-    String errorCode;
+    String status;
     Object data;
 }

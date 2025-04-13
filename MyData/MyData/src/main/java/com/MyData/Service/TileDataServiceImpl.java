@@ -16,12 +16,12 @@ public class TileDataServiceImpl implements TileDataService{
     TileDataRepo tileDataRepo;
 
     @Override
-    public List<TileDataDto> getTileDetailsByUserAndFilter(String userId, String filter){
-        List<TileDataDto> listOfTiles = new ArrayList<>();
+    public List<TileDataDao> getTileDetailsByUserAndFilter(String userId, String filter){
+        List<TileDataDao> listOfTiles = new ArrayList<>();
         if(StringUtil.notNullNorEmpty(userId) && StringUtil.notNullNorEmpty(filter)){
             List<TileDataDao> dbResponse = tileDataRepo.findByUserIdAndCategory(userId, filter);
             if(dbResponse!=null){
-                listOfTiles = TileDataDto.fromDaoList(dbResponse);
+                listOfTiles = dbResponse;
             }
             else{
                 System.out.println("[WARNING] TileDataServiceImpl.java getTileDetailsByUserAndFilter: No data found for given userID and filter.");

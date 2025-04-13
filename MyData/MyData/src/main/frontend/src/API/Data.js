@@ -14,8 +14,18 @@ export async function fetchTiles(filter = 'Default') {
       throw new Error('Failed to fetch tiles');
     }
 
-    const data = await response.json();
-    return data;
+    const res = await response.json();
+
+    if(res.status === "SUCCESS"){
+        return res.data;
+    }
+    else if(res.status === "ERROR"){
+        throw new Error(res.errorMessage || 'Server returned an error');
+    }
+    else{
+        throw new Error('Unexpected error occurred. Please try again later.');
+    }
+
   } catch (error) {
     console.error('API Error:', error);
     throw error;

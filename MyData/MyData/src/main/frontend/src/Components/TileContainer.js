@@ -11,8 +11,8 @@ function TileContainer() {
       .then(data => {
         setTiles(data);
       })
-      .catch(() => {
-        alert('Failed to fetch tiles from the server.');
+      .catch(error => {
+        alert(error.message); // Show the specific error message
       });
   }, []);
 

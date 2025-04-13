@@ -1,6 +1,7 @@
 package com.MyData.Controller;
 
-import com.MyData.Dto.TileDataDto;
+import com.MyData.Dao.TileDataDao;
+import com.MyData.Dto.DataTransferWrapper;
 import com.MyData.Service.TileDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,18 +21,23 @@ public class HomeController {
     }
 
     @PostMapping(value = "/tileList")
-    private List<TileDataDto> fetchTileList(@RequestBody Map<String, String> requestBody){
+    private DataTransferWrapper fetchTileList(@RequestBody Map<String, String> requestBody){
         String filter = requestBody.get("filter");
-        List<TileDataDto> sampelList = new ArrayList<>();
+        DataTransferWrapper res = new DataTransferWrapper();
+        List<TileDataDao> sampelList = new ArrayList<>();
 
         try{
             sampelList = tileDataService.getTileDetailsByUserAndFilter("1001",filter);
+            res.setStatus("SUCCESS");
+            res.setData(sampelList);
         }
         catch (Exception e){
             System.out.println("[ERROR] HomeController fetchTileList: Error occurred while fetching data");
             e.printStackTrace();
+            res.setStatus("ERROR");
+            res.setErrorMessage("Error occurred while connecting to DB");
         }
 
-        return sampelList;
+        return res;
     }
 }
