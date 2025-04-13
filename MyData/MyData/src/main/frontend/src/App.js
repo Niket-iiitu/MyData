@@ -1,5 +1,5 @@
 import './App.css';
-import DataTile from './Components/DataTile.js';
+import TileContainer from './Components/TileContainer.js';
 import {getPing} from './API/HealthCheck.js';
 
 async function serverHealthCheck() {
@@ -14,19 +14,12 @@ async function serverHealthCheck() {
     }
 }
 
-function tileClick(){
-    console.log("Tile clicked");
-}
-
 function App() {
   serverHealthCheck();
   return (
     <div className="App">
       <div>Hellow</div>
-      <div>
-        <DataTile title="Content1" onClick={tileClick}/>
-        <DataTile title="Content2" onClick={tileClick}/>
-      </div>
+      <TileContainer/>
     </div>
   );
 }
