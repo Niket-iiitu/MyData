@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TileDataService {
     List<TileDataDao> getTileDetailsByUserAndFilter(String userId, String filter);
+    List<String> getListOfCategories(String userId);
 }

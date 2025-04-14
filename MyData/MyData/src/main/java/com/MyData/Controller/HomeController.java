@@ -40,4 +40,24 @@ public class HomeController {
 
         return res;
     }
+
+    @PostMapping(value = "/fetchCategories")
+    private DataTransferWrapper fetchCategoryList(){
+        DataTransferWrapper res = new DataTransferWrapper();
+        List<String> sampelList = new ArrayList<>();
+
+        try{
+            sampelList = tileDataService.getListOfCategories("1001");
+            res.setStatus("SUCCESS");
+            res.setData(sampelList);
+        }
+        catch (Exception e){
+            System.out.println("[ERROR] HomeController fetchCategoryList: Error occurred while fetching data");
+            e.printStackTrace();
+            res.setStatus("ERROR");
+            res.setErrorMessage("Error occurred while connecting to DB");
+        }
+
+        return res;
+    }
 }

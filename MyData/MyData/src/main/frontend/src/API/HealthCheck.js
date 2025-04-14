@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '../config/constants';
+import { API_BASE_URL } from '../config/Constants';
 
 export async function getPing() {
   try {

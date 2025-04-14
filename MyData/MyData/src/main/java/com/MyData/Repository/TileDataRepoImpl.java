@@ -22,4 +22,13 @@ public class TileDataRepoImpl implements TileDataRepo{
                 .setParameter("category", category)
                 .getResultList();
     }
+
+    @Override
+    @Transactional
+    public List<String> getCategoriesByUserId(String userId) {
+        String jpql = "SELECT DISTINCT t.category FROM TileDataDao t WHERE t.userId = :userId";
+        return entityManager.createQuery(jpql, String.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
 }
