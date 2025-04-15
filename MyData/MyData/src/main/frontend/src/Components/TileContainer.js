@@ -45,21 +45,19 @@ function TileContainer() {
   };
 
   return (
-    <div>
+    <div className="mainTileContainer">
       <div className="filter-bar">
-        <label htmlFor="category-select">Filter by Category: </label>
+        <div className="category-title">Filter by Category: </div>
         <select id="category-select" value={selectedCategory} onChange={handleCategoryChange}>
           {categories.map((cat, index) => (
             <option key={index} value={cat}>{cat}</option>
           ))}
         </select>
       </div>
-
       <div className="tile-container">
         {filteredTiles.map((tile, index) => (
           <DataTile key={index} title={tile.title} onClick={() => handleClick(tile)} />
         ))}
-
         {selectedTile && (
           <DataPopup
             title={selectedTile.title}

@@ -1,13 +1,13 @@
 html, body, #root {
   height: 100%;
   margin: 0;
-  background-color: black;
+  background-color: rgb(56,56,56);
 }
 
 .App {
   height: 100%;
   justify-content: center;
-  color: blue;
+  color: white;
   font-size: 2rem;
 }
 

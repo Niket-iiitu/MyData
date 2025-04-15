@@ -1,10 +1,17 @@
+.tile-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
 .data-tile {
   padding: 20px;
   margin: 10px;
-  background-color: black;
+  background-color: transparent;
   font-weight: bold;
-  color: white; /* changed from black to white */
-  border: 1px solid grey; /* corrected border */
+  color: white;
+  border: 1px solid grey;
   border-radius: 20px;
   cursor: pointer;
   font-size: 1.2rem;
@@ -12,8 +19,32 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease;
   user-select: none;
-  max-width: 200px;
+  flex: 1 1 200px; /* allows wrapping and resizing */
+  max-width: 250px;
+  min-width: 150px;
 }
+
+/* Desktop: allow max 3-4 per row */
+@media (min-width: 1024px) {
+  .data-tile {
+    flex: 1 1 22%;
+  }
+}
+
+/* Tablet: allow max 2 per row */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .data-tile {
+    flex: 1 1 45%;
+  }
+}
+
+/* Mobile: full width or single column */
+@media (max-width: 599px) {
+  .data-tile {
+    flex: 1 1 90%;
+  }
+}
+
 
 .data-tile:hover {
   transform: scale(1.05);
