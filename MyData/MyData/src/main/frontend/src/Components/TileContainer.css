@@ -5,7 +5,7 @@
     justify-content: center;
     margin-top: 20px;
     color: white;
-    font-size: 1.2rem; /* Bigger text */
+    font-size: 1.1rem; /* Bigger text */
 }
 
 #category-select {
@@ -16,6 +16,7 @@
   font-size: 1.2rem; /* Bigger text */
   padding: 10px 14px;
   margin-left: 10px;
+  margin-right: 25px;
   outline: none;
   appearance: none; /* Removes default arrow in some browsers */
   -webkit-appearance: none; /* For Safari */
@@ -24,7 +25,7 @@
 
 #category-select option {
   color: white;
-  background-color: transparent;
+  background-color: rgb(48,48,48);
 }
 
 .filter-bar{
