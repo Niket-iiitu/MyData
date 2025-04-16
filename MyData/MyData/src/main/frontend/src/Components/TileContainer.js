@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DataTile from './DataTile';
 import DataPopup from './DataPopup';
+import TagModal from './TagModel';
 import './TileContainer.css';
 import { fetchTiles, fetchCategories } from '../API/Data.js';
 
@@ -10,6 +11,13 @@ function TileContainer() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedTile, setSelectedTile] = useState(null);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalSave = (tags) => {
+    setSelectedTags(tags);
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     // Fetch categories
@@ -53,12 +61,30 @@ function TileContainer() {
             <option key={index} value={cat}>{cat}</option>
           ))}
         </select>
-        <div className="category-title">Tags:</div>
-        <select id="category-select" value={selectedCategory} onChange={handleCategoryChange}>
-          {categories.map((cat, index) => (
-            <option key={index} value={cat}>{cat}</option>
-          ))}
-        </select>
+        <div>
+          <div
+            className="tag-field"
+            onClick={() => setIsModalOpen(true)}
+          >
+            {selectedTags.length === 0 ? (
+              <span className="placeholder">Tags</span>
+            ) : (
+              selectedTags.map((tag, idx) => (
+                <span key={idx} className="tag-chip">
+                  {tag}
+                </span>
+              ))
+            )}
+          </div>
+
+          {isModalOpen && (
+            <TagModal
+              selectedTags={selectedTags}
+              onSave={handleModalSave}
+              onClose={() => setIsModalOpen(false)}
+            />
+          )}
+        </div>
       </div>
       <div className="tile-container">
         {filteredTiles.map((tile, index) => (

@@ -1,0 +1,95 @@
+/* Tag Field */
+.tag-field {
+  background-color: #ccc;
+  border: 1px solid white;
+  border-radius: 12px;
+  padding: 8px 12px;
+  color: black;
+  cursor: pointer;
+  min-height: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.placeholder {
+  color: #666;
+}
+
+/* Tag Chips */
+.tag-chip {
+  background-color: white;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  width: 300px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.modal-container h2 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.tag-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tag-option {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: none;
+  background-color: #eee;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tag-option.selected {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn.cancel {
+  background-color: #e5e5e5;
+}
+
+.btn.confirm {
+  background-color: #3b82f6;
+  color: white;
+}
