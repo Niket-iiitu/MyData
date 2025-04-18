@@ -96,6 +96,7 @@ function TileContainer() {
             category={selectedTile.category}
             tags={selectedTile.tags}
             data={selectedTile.data}
+            categoryList={categories}
             onClose={closePopup}
           />
         )}

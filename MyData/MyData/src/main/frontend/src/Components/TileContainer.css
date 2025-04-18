@@ -21,6 +21,11 @@
   appearance: none; /* Removes default arrow in some browsers */
   -webkit-appearance: none; /* For Safari */
   -moz-appearance: none; /* For Firefox */
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px 16px;
 }
 
 #category-select option {

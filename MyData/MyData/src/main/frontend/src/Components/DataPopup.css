@@ -45,7 +45,7 @@
 
 .popup-meta {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
   margin-bottom: 15px;
 }
@@ -77,4 +77,38 @@
   padding-right: 10px;
   border-top: 1px solid #ddd;
   padding-top: 10px;
+}
+
+#category-select-popup {
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 8px;
+  color: black;
+  font-size: 1.2rem; /* Bigger text */
+  padding: 10px 14px;
+  margin-left: 10px;
+  margin-right: 25px;
+  outline: none;
+  appearance: none; /* Removes default arrow in some browsers */
+  -webkit-appearance: none; /* For Safari */
+  -moz-appearance: none; /* For Firefox */
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px 16px;
+}
+
+#category-select-popup option {
+  color: black;
+  background-color: rgb(220,220,220);
+}
+
+.add-category-input {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  color: #333;
 }
