@@ -39,11 +39,11 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
   };
 
   return (
-    <div className="popup-overlay" onClick={onClose}>
+    <div className="popup-overlay" onClick={() => onClose(false)}>
       <div className="popup-container" onClick={(e) => e.stopPropagation()}>
         <div className="popup-header">
           <h2>{title}</h2>
-          <button className="close-button" onClick={onClose}>×</button>
+          <button className="close-button" onClick={() => onClose(false)}>×</button>
         </div>
         <div className="popup-meta">
           <select
