@@ -45,7 +45,7 @@ function TileContainer() {
         fetchCategories()
             .then(data => setCategories(data))
             .catch(err => alert(err.message));
-        fetchTiles().then(data => {
+        fetchTiles(selectedCategory).then(data => {
             setTiles(data);
             setFilteredTiles(data);
         }).catch(error => alert(error.message));
