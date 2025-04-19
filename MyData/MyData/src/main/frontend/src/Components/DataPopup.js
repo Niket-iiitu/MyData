@@ -1,19 +1,40 @@
 import React, { useState } from 'react';
 import './DataPopup.css';
+import {updateNote} from '../API/Data.js';
 
-const DataPopup = ({ title, category, tags, data, categoryList, onClose }) => {
+const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose }) => {
   const [selectedCategory, setSelectedCategory] = useState(category || '');
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCategory, setNewCategory] = useState('');
+
+  const handelButtonClick = (e) => {
+    console.log("Update");
+    var data = {
+        "noteId": noteId,
+        "title": title,
+        "category": category,
+        "data": data,
+        "tags": tags.join('|')
+    };
+    if(newCategory!="" && newCategory!=category){
+        data.category = newCategory;
+        updateNote(data).then((message)=> {
+            alert(message);
+            onClose(true);
+        }).catch(err => alert(err.message));
+    }
+  }
 
   const handleCategoryChange = (e) => {
     const selected = e.target.value;
     setSelectedCategory(selected);
 
     if (selected === 'add') {
-      setShowAddCategory(true);
+        setNewCategory("");
+        setShowAddCategory(true);
     } else {
-      setShowAddCategory(false);
+        setNewCategory(selected);
+        setShowAddCategory(false);
     }
   };
 
@@ -56,6 +77,11 @@ const DataPopup = ({ title, category, tags, data, categoryList, onClose }) => {
 
         <div className="popup-content">
           {data}
+        </div>
+        <div className="popup-buttons">
+            <button type="button" className="update-button" onClick={handelButtonClick}>
+                Update
+            </button>
         </div>
       </div>
     </div>

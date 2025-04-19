@@ -39,8 +39,20 @@ function TileContainer() {
     setSelectedTile(tile);
   };
 
-  const closePopup = () => {
-    setSelectedTile(null);
+  const closePopup = (update=false) => {
+    if(update){
+        setSelectedTile(null);
+        fetchCategories()
+            .then(data => setCategories(data))
+            .catch(err => alert(err.message));
+        fetchTiles().then(data => {
+            setTiles(data);
+            setFilteredTiles(data);
+        }).catch(error => alert(error.message));
+    }
+    else{
+        setSelectedTile(null);
+    }
   };
 
   const handleCategoryChange = (e) => {
@@ -92,6 +104,7 @@ function TileContainer() {
         ))}
         {selectedTile && (
           <DataPopup
+            noteId={selectedTile.id}
             title={selectedTile.title}
             category={selectedTile.category}
             tags={selectedTile.tags}

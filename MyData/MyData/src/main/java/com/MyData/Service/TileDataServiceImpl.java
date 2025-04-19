@@ -2,7 +2,6 @@ package com.MyData.Service;
 
 import ch.qos.logback.core.util.StringUtil;
 import com.MyData.Dao.TileDataDao;
-import com.MyData.Dto.TileDataDto;
 import com.MyData.Repository.TileDataRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,5 +54,24 @@ public class TileDataServiceImpl implements TileDataService{
             System.out.println("[WARNING] TileDataServiceImpl.java getListOfCategories: userId is blank.");
         }
         return listOfCategories;
+    }
+
+    @Override
+    public boolean updateTileById(String chatId, String category, String title, String data, List<String> listOfTags){
+        TileDataDao note = getNoteById(chatId);
+        if(!StringUtil.isNullOrEmpty(category)) note.setCategory(category);
+        if(!StringUtil.isNullOrEmpty(title)) note.setTitle(title);
+        if(!StringUtil.isNullOrEmpty(data)) note.setData(data);
+        note.setTags(listOfTags);
+        return updateNote(note);
+    }
+
+    @Override
+    public TileDataDao getNoteById(String noteId){
+        return tileDataRepo.getNoteById(noteId);
+    }
+
+    public boolean updateNote(TileDataDao note){
+        return tileDataRepo.updateNote(note);
     }
 }

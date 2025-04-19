@@ -63,3 +63,35 @@ export async function fetchCategories() {
     throw error;
   }
 }
+
+export async function updateNote(note) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/updateChatById`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(note),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch tiles');
+    }
+
+    const res = await response.json();
+
+    if(res.status === "SUCCESS"){
+        return "Note Updated Successfully!";
+    }
+    else if(res.status === "ERROR"){
+        return (res.errorMessage || 'Server returned an error');
+    }
+    else{
+        return 'Unexpected error occurred. Please try again later.';
+    }
+
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+}

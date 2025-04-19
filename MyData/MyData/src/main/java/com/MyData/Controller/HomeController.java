@@ -55,7 +55,38 @@ public class HomeController {
             System.out.println("[ERROR] HomeController fetchCategoryList: Error occurred while fetching data");
             e.printStackTrace();
             res.setStatus("ERROR");
-            res.setErrorMessage("Error occurred while connecting to DB");
+            res.setErrorMessage("Some technical error occurred, please reload or retry after some time.");
+        }
+
+        return res;
+    }
+
+    @PostMapping(value = "/updateChatById")
+    private DataTransferWrapper updateChatById(@RequestBody Map<String, String> requestBody){
+        DataTransferWrapper res = new DataTransferWrapper();
+        try{
+            String noteId = requestBody.get("noteId");
+            String category = requestBody.get("category");
+            String title = requestBody.get("title");
+            String data = requestBody.get("data");
+            String tags = requestBody.get("tags");
+            List<String> listOfTags = List.of(tags.split("\\|"));
+
+            if(tileDataService.updateTileById(noteId, category, title, data, listOfTags)){
+                res.setStatus("SUCCESS");
+                res.setData("SUCCESS");
+            }
+            else{
+                res.setStatus("ERROR");
+                res.setErrorMessage("Error occurred while updating note.");
+            }
+
+        }
+        catch (Exception e){
+            System.out.println("[ERROR] HomeController updateChatById: Error occurred while updating data");
+            e.printStackTrace();
+            res.setStatus("ERROR");
+            res.setErrorMessage("Some technical error occurred, please retry after some time.");
         }
 
         return res;
