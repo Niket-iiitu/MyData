@@ -6,6 +6,7 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
   const [selectedCategory, setSelectedCategory] = useState(category || '');
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCategory, setNewCategory] = useState('');
+  const [newTitle, setNewTitle] = useState(title);
 
   const handelButtonClick = (e) => {
     console.log("Update");
@@ -16,11 +17,22 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
         "data": data,
         "tags": tags.join('|')
     };
+    var updateRequired = false;
+
     if(newCategory!="" && newCategory!=category){
         data.category = newCategory;
+        updateRequired = true;
+    }
+
+    if(newTitle!=title){
+        data.title = newTitle;
+        updateRequired = true;
+    }
+
+    if(updateRequired){
         updateNote(data).then((message)=> {
-            alert(message);
             onClose(true);
+            alert(message);
         }).catch(err => alert(err.message));
     }
   }
@@ -42,7 +54,12 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
     <div className="popup-overlay" onClick={() => onClose(false)}>
       <div className="popup-container" onClick={(e) => e.stopPropagation()}>
         <div className="popup-header">
-          <h2>{title}</h2>
+          <input
+            className="popup-title-input"
+            type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+          />
           <button className="close-button" onClick={() => onClose(false)}>×</button>
         </div>
         <div className="popup-meta">
@@ -70,7 +87,7 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
 
           <div className="tags-box">
             {tags.map((tag, index) => (
-              <span key={index} className="tag-item">{tag}</span>
+              (tag.length>0) && <span key={index} className="tag-item">{tag}</span>
             ))}
           </div>
         </div>

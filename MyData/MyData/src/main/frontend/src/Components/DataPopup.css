@@ -66,9 +66,20 @@
 
 .tag-item {
   background-color: #f0f0f0;
-  padding: 5px 10px;
-  border-radius: 20px;
+  padding: 10px 10px;
+  border-radius: 10px;
   font-size: 14px;
+  align-item: center;
+  font-weight: bold;
+}
+
+.popup-title-input {
+  font-size: 1.5em;         /* Match h2 size */
+  font-weight: bold;        /* Match h2 weight */
+  border: none;
+  outline: none;
+  background: transparent;
+  flex-grow: 1;
 }
 
 .popup-content {
