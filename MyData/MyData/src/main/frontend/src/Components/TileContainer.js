@@ -67,7 +67,6 @@ function TileContainer() {
   return (
     <div className="mainTileContainer">
       <div className="filter-bar">
-        <div className="category-title">Category:</div>
         <select id="category-select" value={selectedCategory} onChange={handleCategoryChange}>
           {categories.map((cat, index) => (
             <option key={index} value={cat}>{cat}</option>
