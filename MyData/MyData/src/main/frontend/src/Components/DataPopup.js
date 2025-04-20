@@ -7,6 +7,7 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCategory, setNewCategory] = useState('');
   const [newTitle, setNewTitle] = useState(title);
+  const [newData, setNewData] = useState(data);
 
   const handelButtonClick = (e) => {
     console.log("Update");
@@ -26,6 +27,11 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
 
     if(newTitle!=title){
         data.title = newTitle;
+        updateRequired = true;
+    }
+
+    if(newData!=data){
+        data.data = newData;
         updateRequired = true;
     }
 
@@ -93,7 +99,11 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
         </div>
 
         <div className="popup-content">
-          {data}
+          <textarea
+            className="popup-textarea"
+            value={newData}
+            onChange={(e) => setNewData(e.target.value)}
+          />
         </div>
         <div className="popup-buttons">
             <button type="button" className="update-button" onClick={handelButtonClick}>
