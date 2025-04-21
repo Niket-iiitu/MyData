@@ -13,6 +13,7 @@ function TileContainer() {
   const [selectedTile, setSelectedTile] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tagList, setTagList] = useState(["Test1", "Test2", "Test3"]);
 
   const handleModalSave = (tags) => {
     setSelectedTags(tags);
@@ -31,8 +32,26 @@ function TileContainer() {
       .then(data => {
         setTiles(data);
         setFilteredTiles(data);
+        const tagSet = new Set();
+
+        for (const note of data) {
+          const tags = note.tags;
+          if (Array.isArray(tags) && tags.some(tag => tag.trim() !== "")) {
+            tags.forEach(tag => {
+              if (tag.trim() !== "") {
+                tagSet.add(tag.trim());
+              }
+            });
+          }
+        }
+
+        const sortedTags = Array.from(tagSet).sort();
+        setTagList(sortedTags);
       })
-      .catch(error => alert(error.message));
+      .catch(error => {
+        alert(error.message);
+        console.log(error);
+      });
   }, []);
 
   const handleClick = (tile) => {
@@ -90,6 +109,7 @@ function TileContainer() {
 
           {isModalOpen && (
             <TagModal
+              listOfTags = {tagList}
               selectedTags={selectedTags}
               onSave={handleModalSave}
               onClose={() => setIsModalOpen(false)}
