@@ -15,13 +15,22 @@ async function serverHealthCheck() {
 }
 
 function App() {
-  serverHealthCheck();
-  return (
-    <div className="App">
-      <div>Hellow</div>
-      <TileContainer/>
-    </div>
-  );
+    const handleCreate = () => {
+        alert('Create new note'); // Replace this with your create note logic
+    };
+    serverHealthCheck();
+    return (
+        <div className="App">
+            <div className="app-header">
+                <span>IdeaNotes</span>
+                <img src="/LightBulb.png" alt="Lightbulb" className="lightbulb-icon" />
+            </div>
+            <TileContainer/>
+            <button className="floating-create-btn" onClick={handleCreate}>
+                ＋
+            </button>
+        </div>
+    );
 }
 
 export default App;
