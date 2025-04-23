@@ -54,6 +54,18 @@ function TileContainer() {
       });
   }, []);
 
+  useEffect(() => {
+    if(selectedTags.length>0){
+        const newTiles = tiles.filter(tile =>
+            selectedTags.every(tag => tile.tags.includes(tag))
+        );
+        setFilteredTiles(newTiles);
+    }
+    else{
+       setFilteredTiles(tiles);
+    }
+  }, [selectedTags, tiles]);
+
   const handleClick = (tile) => {
     setSelectedTile(tile);
   };
