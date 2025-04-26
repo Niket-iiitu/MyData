@@ -23,6 +23,16 @@ function TileContainer() {
 
   const togglePopup = () => {
     setCreateNote(!createNote);
+    if(createNote===true){
+        setSelectedTile(null);
+        fetchCategories()
+            .then(data => setCategories(data))
+            .catch(err => alert(err.message));
+        fetchTiles(selectedCategory).then(data => {
+            setTiles(data);
+            setFilteredTiles(data);
+        }).catch(error => alert(error.message));
+    }
   }
 
   useEffect(() => {
@@ -162,7 +172,7 @@ function TileContainer() {
             tags={[]}
             data=""
             categoryList={categories}
-            onClose={() => setCreateNote(false)}
+            onClose={togglePopup}
           />
         )}
       </div>
