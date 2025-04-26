@@ -9,4 +9,5 @@ public interface TileDataService {
     List<String> getListOfCategories(String userId);
     boolean updateTileById(String chatId, String category, String title, String data, List<String> listOfTags);
     TileDataDao getNoteById(String chatId);
+    boolean createNewNote(String category, String title, String data, List<String> listOfTags, String userId);
 }

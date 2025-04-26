@@ -15,9 +15,6 @@ async function serverHealthCheck() {
 }
 
 function App() {
-    const handleCreate = () => {
-        alert('Create new note'); // Replace this with your create note logic
-    };
     serverHealthCheck();
     return (
         <div className="App">
@@ -26,9 +23,6 @@ function App() {
                 <img src="/LightBulb.png" alt="Lightbulb" className="lightbulb-icon" />
             </div>
             <TileContainer/>
-            <button className="floating-create-btn" onClick={handleCreate}>
-                ＋
-            </button>
         </div>
     );
 }

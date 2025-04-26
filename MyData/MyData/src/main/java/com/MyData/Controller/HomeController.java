@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 public class HomeController {
@@ -61,8 +62,8 @@ public class HomeController {
         return res;
     }
 
-    @PostMapping(value = "/updateChatById")
-    private DataTransferWrapper updateChatById(@RequestBody Map<String, String> requestBody){
+    @PostMapping(value = "/createAndUpdateNote")
+    private DataTransferWrapper createAndUpdateNote(@RequestBody Map<String, String> requestBody){
         DataTransferWrapper res = new DataTransferWrapper();
         try{
             String noteId = requestBody.get("noteId");
@@ -71,8 +72,20 @@ public class HomeController {
             String data = requestBody.get("data");
             String tags = requestBody.get("tags");
             List<String> listOfTags = List.of(tags.split("\\|"));
+            String userId = "1001";
 
-            if(tileDataService.updateTileById(noteId, category, title, data, listOfTags)){
+            if(Objects.equals(noteId, "")){
+                System.out.println("New chat being created");
+                if(tileDataService.createNewNote(category, title, data, listOfTags, userId)){
+                    res.setStatus("SUCCESS");
+                    res.setData("SUCCESS");
+                }
+                else{
+                    res.setStatus("ERROR");
+                    res.setErrorMessage("Error occurred while creating new note.");
+                }
+            }
+            else if(tileDataService.updateTileById(noteId, category, title, data, listOfTags)){
                 res.setStatus("SUCCESS");
                 res.setData("SUCCESS");
             }

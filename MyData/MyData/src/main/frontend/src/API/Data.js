@@ -43,7 +43,7 @@ export async function fetchCategories() {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch tiles');
+      throw new Error('Failed to fetch notes');
     }
 
     const res = await response.json();
@@ -66,7 +66,7 @@ export async function fetchCategories() {
 
 export async function updateNote(note) {
   try {
-    const response = await fetch(`${API_BASE_URL}/updateChatById`, {
+    const response = await fetch(`${API_BASE_URL}/createAndUpdateNote`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -75,13 +75,45 @@ export async function updateNote(note) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch tiles');
+      throw new Error('Failed to update note');
     }
 
     const res = await response.json();
 
     if(res.status === "SUCCESS"){
         return "Note Updated Successfully!";
+    }
+    else if(res.status === "ERROR"){
+        return (res.errorMessage || 'Server returned an error');
+    }
+    else{
+        return 'Unexpected error occurred. Please try again later.';
+    }
+
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+}
+
+export async function createNote(note) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/createAndUpdateNote`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(note),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create note');
+    }
+
+    const res = await response.json();
+
+    if(res.status === "SUCCESS"){
+        return "Note Created Successfully!";
     }
     else if(res.status === "ERROR"){
         return (res.errorMessage || 'Server returned an error');

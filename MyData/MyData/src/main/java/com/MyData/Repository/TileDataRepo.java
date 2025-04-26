@@ -9,4 +9,5 @@ public interface TileDataRepo {
     List<String> getCategoriesByUserId(String userId);
     TileDataDao getNoteById(String noteId);
     boolean updateNote(TileDataDao note);
+    boolean createNote(TileDataDao note);
 }

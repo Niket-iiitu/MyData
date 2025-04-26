@@ -55,4 +55,18 @@ public class TileDataRepoImpl implements TileDataRepo{
             return false;
         }
     }
+
+    @Override
+    @Transactional
+    public boolean createNote(TileDataDao note){
+        try {
+            entityManager.merge(note);
+            return true;
+        } catch (Exception e) {
+            System.out.println("[ERROR] TileDataRepoImpl createNewNote: Unable to create new note.");
+            System.out.println(note.toString());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

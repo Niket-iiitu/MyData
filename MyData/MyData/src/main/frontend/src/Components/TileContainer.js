@@ -9,16 +9,21 @@ function TileContainer() {
   const [tiles, setTiles] = useState([]);
   const [filteredTiles, setFilteredTiles] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState('Default');
   const [selectedTile, setSelectedTile] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tagList, setTagList] = useState(["Test1", "Test2", "Test3"]);
+  const [createNote, setCreateNote] = useState(false);
 
   const handleModalSave = (tags) => {
     setSelectedTags(tags);
     setIsModalOpen(false);
   };
+
+  const togglePopup = () => {
+    setCreateNote(!createNote);
+  }
 
   useEffect(() => {
     // Fetch categories
@@ -142,6 +147,22 @@ function TileContainer() {
             data={selectedTile.data}
             categoryList={categories}
             onClose={closePopup}
+          />
+        )}
+      </div>
+      <div>
+        <button className="floating-create-btn" onClick={togglePopup}>
+          ＋
+        </button>
+        {createNote && (
+          <DataPopup
+            noteId=""
+            title="New Idea"
+            category={selectedCategory}
+            tags={[]}
+            data=""
+            categoryList={categories}
+            onClose={() => setCreateNote(false)}
           />
         )}
       </div>

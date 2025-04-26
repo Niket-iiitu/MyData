@@ -74,4 +74,15 @@ public class TileDataServiceImpl implements TileDataService{
     public boolean updateNote(TileDataDao note){
         return tileDataRepo.updateNote(note);
     }
+
+    @Override
+    public boolean createNewNote(String category, String title, String data, List<String> listOfTags, String userId){
+        TileDataDao note = new TileDataDao();
+        note.setCategory(category);
+        note.setTitle(title);
+        note.setData(data);
+        note.setTags(listOfTags);
+        note.setUserId(userId);
+        return tileDataRepo.createNote(note);
+    }
 }

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import './DataPopup.css';
-import {updateNote} from '../API/Data.js';
+import {updateNote, createNote} from '../API/Data.js';
 
 const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose }) => {
-  const [selectedCategory, setSelectedCategory] = useState(category || '');
+  const [selectedCategory, setSelectedCategory] = useState(category || 'Default');
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCategory, setNewCategory] = useState('');
   const [newTitle, setNewTitle] = useState(title);
   const [newData, setNewData] = useState(data);
 
-  const handelButtonClick = (e) => {
-    console.log("Update");
+  const handelUpdate = (e) => {
+    console.log("Updating note");
     var data = {
         "noteId": noteId,
         "title": title,
@@ -42,6 +42,36 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
         }).catch(err => alert(err.message));
     }
   }
+
+  const handelCreate = (e) => {
+      console.log("Updating note");
+      var data = {
+          "noteId": noteId,
+          "title": newTitle,
+          "category": category,
+          "data": newData,
+          "tags": tags.join('|')
+      };
+      var validRequest = true;
+
+      if(newCategory!="" && newCategory!=category){
+        data.category = newCategory;
+      }
+
+      if(newTitle.trim()!=""){
+        validRequest = validRequest && true;
+      }
+      else{
+        validRequest = validRequest && false;
+      }
+
+      if(validRequest){
+          createNote(data).then((message)=> {
+              onClose(true);
+              alert(message);
+          }).catch(err => alert(err.message));
+      }
+    }
 
   const handleCategoryChange = (e) => {
     const selected = e.target.value;
@@ -106,9 +136,15 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
           />
         </div>
         <div className="popup-buttons">
-            <button type="button" className="update-button" onClick={handelButtonClick}>
+            {noteId === "" ? (
+              <button type="button" className="create-button" onClick={handelCreate}>
+                Create
+              </button>
+            ) : (
+              <button type="button" className="update-button" onClick={handelUpdate}>
                 Update
-            </button>
+              </button>
+            )}
         </div>
       </div>
     </div>

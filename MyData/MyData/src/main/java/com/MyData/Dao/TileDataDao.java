@@ -1,5 +1,6 @@
 package com.MyData.Dao;
 
+import com.MyData.Converter.TagsConverter;
 import lombok.Data;
 import jakarta.persistence.*;
 
@@ -22,5 +23,6 @@ public class TileDataDao {
     @Column(name="data")
     private String data;
     @Column(name="tags")
+    @Convert(converter = TagsConverter.class)
     private List<String> tags;
 }

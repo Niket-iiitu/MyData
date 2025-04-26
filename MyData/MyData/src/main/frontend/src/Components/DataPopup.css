@@ -155,6 +155,16 @@
     font-size: 16px;
 }
 
+.create-button{
+    padding: 10px 20px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
 .update-button:hover{
     background-color: #4338ca;
 }
