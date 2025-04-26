@@ -10,4 +10,5 @@ public interface TileDataRepo {
     TileDataDao getNoteById(String noteId);
     boolean updateNote(TileDataDao note);
     boolean createNote(TileDataDao note);
+    boolean deleteNoteById(TileDataDao note);
 }

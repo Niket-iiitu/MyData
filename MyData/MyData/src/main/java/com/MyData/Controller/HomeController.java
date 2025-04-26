@@ -96,6 +96,37 @@ public class HomeController {
 
         }
         catch (Exception e){
+            System.out.println("[ERROR] HomeController createAndUpdateNote: Error occurred while updating data");
+            e.printStackTrace();
+            res.setStatus("ERROR");
+            res.setErrorMessage("Some technical error occurred, please retry after some time.");
+        }
+
+        return res;
+    }
+
+    @PostMapping(value = "/deleteNote")
+    private DataTransferWrapper deleteNote(@RequestBody Map<String, String> requestBody){
+        DataTransferWrapper res = new DataTransferWrapper();
+        String noteId = requestBody.get("noteId");
+        try{
+            String userId = "1001";
+
+            if(Objects.equals(noteId, null)){
+                res.setStatus("ERROR");
+                res.setErrorMessage("Invalid Note ID");
+            }
+            else if(tileDataService.deleteNoteById(noteId, userId)){
+                res.setStatus("SUCCESS");
+                res.setData("SUCCESS");
+            }
+            else{
+                res.setStatus("ERROR");
+                res.setErrorMessage("Error occurred while updating note.");
+            }
+
+        }
+        catch (Exception e){
             System.out.println("[ERROR] HomeController updateChatById: Error occurred while updating data");
             e.printStackTrace();
             res.setStatus("ERROR");

@@ -69,4 +69,23 @@ public class TileDataRepoImpl implements TileDataRepo{
             return false;
         }
     }
+
+    @Override
+    @Transactional
+    public boolean deleteNoteById(TileDataDao note){
+        try {
+            if(note != null){
+                entityManager.remove(note);
+                return true;
+            }
+            else{
+                System.out.println("[ERROR] TileDataRepoImpl deleteNoteById: Note not found.");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("[ERROR] TileDataRepoImpl deleteNoteById: Unable to delete note.");
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './DataPopup.css';
-import {updateNote, createNote} from '../API/Data.js';
+import {updateNote, createNote, deleteNote} from '../API/Data.js';
 
 const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose }) => {
   const [selectedCategory, setSelectedCategory] = useState(category || 'Default');
@@ -8,6 +8,14 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
   const [newCategory, setNewCategory] = useState('');
   const [newTitle, setNewTitle] = useState(title);
   const [newData, setNewData] = useState(data);
+
+  const handelCancel = (e) => {
+    console.log("Canceling note");
+    deleteNote(noteId).then((message)=> {
+        onClose(true);
+        alert(message);
+    }).catch(err => alert(err.message));
+  }
 
   const handelUpdate = (e) => {
     console.log("Updating note");
@@ -44,7 +52,7 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
   }
 
   const handelCreate = (e) => {
-      console.log("Updating note");
+      console.log("New note created");
       var data = {
           "noteId": noteId,
           "title": newTitle,
@@ -141,9 +149,14 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
                 Create
               </button>
             ) : (
-              <button type="button" className="update-button" onClick={handelUpdate}>
-                Update
-              </button>
+              <>
+                  <button type="button" className="delete-button" onClick={handelCancel}>
+                    Delete
+                  </button>
+                  <button type="button" className="update-button" onClick={handelUpdate}>
+                    Update
+                  </button>
+              </>
             )}
         </div>
       </div>

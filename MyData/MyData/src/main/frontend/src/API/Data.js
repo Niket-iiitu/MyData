@@ -127,3 +127,33 @@ export async function createNote(note) {
     throw error;
   }
 }
+
+export async function deleteNote(noteId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/deleteNote`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ noteId }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete note');
+    }
+
+    const res = await response.json();
+
+    if (res.status === "SUCCESS") {
+      return "Note Deleted Successfully!";
+    } else if (res.status === "ERROR") {
+      return res.errorMessage || 'Server returned an error';
+    } else {
+      return 'Unexpected error occurred. Please try again later.';
+    }
+
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+}

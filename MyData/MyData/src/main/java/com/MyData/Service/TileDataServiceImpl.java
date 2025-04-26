@@ -85,4 +85,18 @@ public class TileDataServiceImpl implements TileDataService{
         note.setUserId(userId);
         return tileDataRepo.createNote(note);
     }
+
+    @Override
+    public boolean deleteNoteById(String noteId, String userId){
+        TileDataDao note = getNoteById(noteId);
+        if(note == null || !note.getUserId().equals(userId)){
+            System.out.println("[WARNING] TileDataServiceImpl deleteNoteById: Note not found or userId mismatch.");
+            return false;
+        }
+        if(!note.getUserId().equals(userId)){
+            System.out.println("[WARNING] TileDataServiceImpl deleteNoteById: UserId mismatch.");
+            return false;
+        }
+        return tileDataRepo.deleteNoteById(note);
+    }
 }
