@@ -8,6 +8,7 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
   const [newCategory, setNewCategory] = useState('');
   const [newTitle, setNewTitle] = useState(title);
   const [newData, setNewData] = useState(data);
+  const [newTags, setNewTags] = useState(tags);
 
   const handelCancel = (e) => {
     console.log("Canceling note");
@@ -38,6 +39,11 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
         updateRequired = true;
     }
 
+    if(newTags.join('|')!=tags.join('|')){
+        data.tags = newTags.join('|');
+        updateRequired = true;
+    }
+
     if(newData!=data){
         data.data = newData;
         updateRequired = true;
@@ -58,7 +64,7 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
           "title": newTitle,
           "category": category,
           "data": newData,
-          "tags": tags.join('|')
+          "tags": newTags.join('|')
       };
       var validRequest = true;
 
@@ -129,11 +135,35 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
             />
           )}
 
-          <div className="tags-box">
-            {tags.map((tag, index) => (
-              (tag.length>0) && <span key={index} className="tag-item">{tag}</span>
-            ))}
-          </div>
+        <div className="tags-box">
+          {newTags.map((tag, index) => (
+            (tag.length > 0) && (
+              <span key={index} className="tag-item">
+                {tag}
+                <button
+                  className="delete-tag-button"
+                  onClick={() => {
+                    const updatedTags = tags.filter((_, i) => i !== index);
+                    setNewTags(updatedTags); // Update the tags state
+                  }}
+                >
+                  ×
+                </button>
+              </span>
+            )
+          ))}
+          <input
+            type="text"
+            className="add-tag-input"
+            placeholder="Add a tag"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                setNewTags([...newTags, e.target.value.trim()]); // Add new tag
+                e.target.value = ''; // Clear input
+              }
+            }}
+          />
+        </div>
         </div>
 
         <div className="popup-content">
