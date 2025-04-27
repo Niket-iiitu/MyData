@@ -1,7 +1,6 @@
 package com.MyData.Repository;
 
-import ch.qos.logback.core.util.StringUtil;
-import com.MyData.Dao.TileDataDao;
+import com.MyData.Dao.NotesDataDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -10,15 +9,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class TileDataRepoImpl implements TileDataRepo{
+public class NotesRepoImpl implements NotesRepo {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     @Transactional
-    public List<TileDataDao> findByUserIdAndCategory(String userId, String category) {
-        String jpql = "FROM TileDataDao t WHERE t.userId = :userId AND t.category = :category";
-        return entityManager.createQuery(jpql, TileDataDao.class)
+    public List<NotesDataDao> findByUserIdAndCategory(String userId, String category) {
+        String jpql = "FROM NotesDataDao t WHERE t.userId = :userId AND t.category = :category";
+        return entityManager.createQuery(jpql, NotesDataDao.class)
                 .setParameter("userId", userId)
                 .setParameter("category", category)
                 .getResultList();
@@ -27,7 +26,7 @@ public class TileDataRepoImpl implements TileDataRepo{
     @Override
     @Transactional
     public List<String> getCategoriesByUserId(String userId) {
-        String jpql = "SELECT DISTINCT t.category FROM TileDataDao t WHERE t.userId = :userId";
+        String jpql = "SELECT DISTINCT t.category FROM NotesDataDao t WHERE t.userId = :userId";
         return entityManager.createQuery(jpql, String.class)
                 .setParameter("userId", userId)
                 .getResultList();
@@ -35,16 +34,16 @@ public class TileDataRepoImpl implements TileDataRepo{
 
     @Override
     @Transactional
-    public TileDataDao getNoteById(String noteId){
-        String jpql = "FROM TileDataDao t WHERE t.id = :id";
-        return entityManager.createQuery(jpql, TileDataDao.class)
+    public NotesDataDao getNoteById(String noteId){
+        String jpql = "FROM NotesDataDao t WHERE t.id = :id";
+        return entityManager.createQuery(jpql, NotesDataDao.class)
                 .setParameter("id", noteId)
                 .getSingleResult();
     }
 
     @Override
     @Transactional
-    public boolean updateNote(TileDataDao note){
+    public boolean updateNote(NotesDataDao note){
         try {
             entityManager.merge(note);
             return true;
@@ -58,7 +57,7 @@ public class TileDataRepoImpl implements TileDataRepo{
 
     @Override
     @Transactional
-    public boolean createNote(TileDataDao note){
+    public boolean createNote(NotesDataDao note){
         try {
             entityManager.merge(note);
             return true;
@@ -72,7 +71,7 @@ public class TileDataRepoImpl implements TileDataRepo{
 
     @Override
     @Transactional
-    public boolean deleteNoteById(TileDataDao note){
+    public boolean deleteNoteById(NotesDataDao note){
         try {
             if(note != null){
                 entityManager.remove(note);

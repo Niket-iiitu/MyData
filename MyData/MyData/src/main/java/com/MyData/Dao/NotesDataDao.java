@@ -7,9 +7,9 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "TD_TILE_DATA")
+@Table(name = "TD_NOTES_DATA")
 @Data
-public class TileDataDao {
+public class NotesDataDao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="Id")

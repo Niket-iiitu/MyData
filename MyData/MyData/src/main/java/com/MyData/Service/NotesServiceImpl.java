@@ -1,8 +1,8 @@
 package com.MyData.Service;
 
 import ch.qos.logback.core.util.StringUtil;
-import com.MyData.Dao.TileDataDao;
-import com.MyData.Repository.TileDataRepo;
+import com.MyData.Dao.NotesDataDao;
+import com.MyData.Repository.NotesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +11,15 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class TileDataServiceImpl implements TileDataService{
+public class NotesServiceImpl implements NotesService {
     @Autowired
-    TileDataRepo tileDataRepo;
+    NotesRepo notesRepo;
 
     @Override
-    public List<TileDataDao> getTileDetailsByUserAndFilter(String userId, String filter){
-        List<TileDataDao> listOfTiles = new ArrayList<>();
+    public List<NotesDataDao> getTileDetailsByUserAndFilter(String userId, String filter){
+        List<NotesDataDao> listOfTiles = new ArrayList<>();
         if(StringUtil.notNullNorEmpty(userId) && StringUtil.notNullNorEmpty(filter)){
-            List<TileDataDao> dbResponse = tileDataRepo.findByUserIdAndCategory(userId, filter);
+            List<NotesDataDao> dbResponse = notesRepo.findByUserIdAndCategory(userId, filter);
             if(dbResponse!=null){
                 listOfTiles = dbResponse;
             }
@@ -37,7 +37,7 @@ public class TileDataServiceImpl implements TileDataService{
     public List<String> getListOfCategories(String userId){
         List<String> listOfCategories = new ArrayList<>();
         if(StringUtil.notNullNorEmpty(userId)){
-            List<String> dbResponse = tileDataRepo.getCategoriesByUserId(userId);
+            List<String> dbResponse = notesRepo.getCategoriesByUserId(userId);
             if(dbResponse!=null && dbResponse.size()>0){
                 listOfCategories = dbResponse;
                 if(listOfCategories.contains("Default")){
@@ -58,7 +58,7 @@ public class TileDataServiceImpl implements TileDataService{
 
     @Override
     public boolean updateTileById(String chatId, String category, String title, String data, List<String> listOfTags){
-        TileDataDao note = getNoteById(chatId);
+        NotesDataDao note = getNoteById(chatId);
         if(!StringUtil.isNullOrEmpty(category)) note.setCategory(category);
         if(!StringUtil.isNullOrEmpty(title)) note.setTitle(title);
         if(!StringUtil.isNullOrEmpty(data)) note.setData(data);
@@ -67,28 +67,28 @@ public class TileDataServiceImpl implements TileDataService{
     }
 
     @Override
-    public TileDataDao getNoteById(String noteId){
-        return tileDataRepo.getNoteById(noteId);
+    public NotesDataDao getNoteById(String noteId){
+        return notesRepo.getNoteById(noteId);
     }
 
-    public boolean updateNote(TileDataDao note){
-        return tileDataRepo.updateNote(note);
+    public boolean updateNote(NotesDataDao note){
+        return notesRepo.updateNote(note);
     }
 
     @Override
     public boolean createNewNote(String category, String title, String data, List<String> listOfTags, String userId){
-        TileDataDao note = new TileDataDao();
+        NotesDataDao note = new NotesDataDao();
         note.setCategory(category);
         note.setTitle(title);
         note.setData(data);
         note.setTags(listOfTags);
         note.setUserId(userId);
-        return tileDataRepo.createNote(note);
+        return notesRepo.createNote(note);
     }
 
     @Override
     public boolean deleteNoteById(String noteId, String userId){
-        TileDataDao note = getNoteById(noteId);
+        NotesDataDao note = getNoteById(noteId);
         if(note == null || !note.getUserId().equals(userId)){
             System.out.println("[WARNING] TileDataServiceImpl deleteNoteById: Note not found or userId mismatch.");
             return false;
@@ -97,6 +97,6 @@ public class TileDataServiceImpl implements TileDataService{
             System.out.println("[WARNING] TileDataServiceImpl deleteNoteById: UserId mismatch.");
             return false;
         }
-        return tileDataRepo.deleteNoteById(note);
+        return notesRepo.deleteNoteById(note);
     }
 }

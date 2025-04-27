@@ -1,9 +1,9 @@
 package com.MyData.Controller;
 
-import com.MyData.Dao.TileDataDao;
+import com.MyData.Dao.NotesDataDao;
 import com.MyData.Dto.DataTransferWrapper;
 import com.MyData.Service.LoggingService;
-import com.MyData.Service.TileDataService;
+import com.MyData.Service.NotesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +15,7 @@ import java.util.Objects;
 @RestController
 public class HomeController {
     @Autowired
-    TileDataService tileDataService;
+    NotesService notesService;
 
     @Autowired
     LoggingService loggingService;
@@ -29,11 +29,11 @@ public class HomeController {
     private DataTransferWrapper fetchTileList(@RequestBody Map<String, String> requestBody){
         String filter = requestBody.get("filter");
         DataTransferWrapper res = new DataTransferWrapper();
-        List<TileDataDao> sampelList = new ArrayList<>();
+        List<NotesDataDao> sampelList = new ArrayList<>();
         String userId = "1001";
 
         try{
-            sampelList = tileDataService.getTileDetailsByUserAndFilter(userId,filter);
+            sampelList = notesService.getTileDetailsByUserAndFilter(userId,filter);
             res.setStatus("SUCCESS");
             res.setData(sampelList);
             loggingService.logRequest(requestBody.toString(), res.toString(), "FETCH_NOTE_LIST", userId, "SUCCESS");
@@ -56,7 +56,7 @@ public class HomeController {
         String userId = "1001";
 
         try{
-            sampelList = tileDataService.getListOfCategories(userId);
+            sampelList = notesService.getListOfCategories(userId);
             res.setStatus("SUCCESS");
             res.setData(sampelList);
             loggingService.logRequest("{}", res.toString(), "FETCH_CATEGORIES", userId, "SUCCESS");
@@ -86,7 +86,7 @@ public class HomeController {
 
             if(Objects.equals(noteId, "")){
                 System.out.println("New chat being created");
-                if(tileDataService.createNewNote(category, title, data, listOfTags, userId)){
+                if(notesService.createNewNote(category, title, data, listOfTags, userId)){
                     res.setStatus("SUCCESS");
                     res.setData("SUCCESS");
                     loggingService.logRequest(requestBody.toString(), res.toString(), "CREATE_NOTE", userId, "SUCCESS");
@@ -97,7 +97,7 @@ public class HomeController {
                     loggingService.logRequest(requestBody.toString(), res.toString(), "CREATE_NOTE", userId, "ERROR");
                 }
             }
-            else if(tileDataService.updateTileById(noteId, category, title, data, listOfTags)){
+            else if(notesService.updateTileById(noteId, category, title, data, listOfTags)){
                 res.setStatus("SUCCESS");
                 res.setData("SUCCESS");
                 loggingService.logRequest(requestBody.toString(), res.toString(), "UPDATE_NOTE", userId, "SUCCESS");
@@ -132,7 +132,7 @@ public class HomeController {
                 res.setErrorMessage("Invalid Note ID");
                 loggingService.logRequest(requestBody.toString(), res.toString(), "DELETE_NOTE", userId, "ERROR");
             }
-            else if(tileDataService.deleteNoteById(noteId, userId)){
+            else if(notesService.deleteNoteById(noteId, userId)){
                 res.setStatus("SUCCESS");
                 res.setData("SUCCESS");
                 loggingService.logRequest(requestBody.toString(), res.toString(), "DELETE_NOTE", userId, "SUCCESS");

@@ -1,6 +1,6 @@
 package com.MyData.Dto;
 
-import com.MyData.Dao.TileDataDao;
+import com.MyData.Dao.NotesDataDao;
 import lombok.Data;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class TileDataDto {
     private String category;
     private String data;
 
-    public static List<TileDataDto> fromDaoList(List<TileDataDao> daoList) {
+    public static List<TileDataDto> fromDaoList(List<NotesDataDao> daoList) {
         return daoList.stream().map(dao -> {
             TileDataDto dto = new TileDataDto();
             dto.setTitle(dao.getTitle());
