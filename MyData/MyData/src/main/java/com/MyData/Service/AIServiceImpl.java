@@ -1,24 +1,26 @@
 package com.MyData.Service;
 
 import com.MyData.Dto.AiResponse;
+import com.MyData.Repository.ApplicationParameterRepository;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 public class AIServiceImpl implements AIService {
+    @Autowired
+    ApplicationParameterRepository applicationParameterRepository;
+
     @Override
     public AiResponse processResponse(String text){
         // Summarization Model (BART)
@@ -39,6 +41,8 @@ public class AIServiceImpl implements AIService {
         String API_KEY = "your-hugging-face-api-key-here";
         String responseString = "";
         try{
+            API_KEY = applicationParameterRepository.findValueByParameter("AI_KEY");
+
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpPost postRequest = new HttpPost(HUGGINGFACE_API_URL + "/" + model);
             postRequest.setHeader("Authorization", "Bearer " + API_KEY);
