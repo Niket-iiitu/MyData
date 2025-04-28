@@ -206,3 +206,18 @@
   border: none;
   outline: none;
 }
+
+.summarize-button{
+    padding: 10px 20px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.summarize-button:hover{
+    background-color: #2563eb;
+}

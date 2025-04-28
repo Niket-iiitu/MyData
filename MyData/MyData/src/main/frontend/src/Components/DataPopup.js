@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './DataPopup.css';
 import {updateNote, createNote, deleteNote} from '../API/Data.js';
+import {generateSummery} from '../API/AI.js';
 
 const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose }) => {
   const [selectedCategory, setSelectedCategory] = useState(category || 'Default');
@@ -9,6 +10,21 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
   const [newTitle, setNewTitle] = useState(title);
   const [newData, setNewData] = useState(data);
   const [newTags, setNewTags] = useState(tags);
+
+  const handelSummarize = (e) => {
+    console.log("Summarize Note");
+    generateSummery(newData).then((response)=>{
+        if(response.summary!=null && response.summary!=""){
+            setNewData(response.summary);
+        }
+        if(response.title!=null && response.title!=""){
+            setNewTitle(response.title);
+        }
+        if(Array.isArray(response.tags) && response.tags.length > 0){
+            setNewTags(response.tags);
+        }
+    })
+  }
 
   const handelCancel = (e) => {
     console.log("Canceling note");
@@ -175,9 +191,14 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
         </div>
         <div className="popup-buttons">
             {noteId === "" ? (
-              <button type="button" className="create-button" onClick={handelCreate}>
-                Create
-              </button>
+              <>
+                  <button type="button" className="create-button" onClick={handelCreate}>
+                    Create
+                  </button>
+                  <button type="button" className="summarize-button" onClick={handelSummarize}>
+                    Summarize
+                  </button>
+              </>
             ) : (
               <>
                   <button type="button" className="delete-button" onClick={handelCancel}>
