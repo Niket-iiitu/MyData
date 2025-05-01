@@ -48,7 +48,7 @@ public class NotesRepoImpl implements NotesRepo {
             entityManager.merge(note);
             return true;
         } catch (Exception e) {
-            System.out.println("[ERROR] TileDataRepoImpl updateNote: Unable to update note.");
+            System.out.println("[ERROR] NotesRepoImpl updateNote: Unable to update note.");
             System.out.println(note.toString());
             e.printStackTrace();
             return false;
@@ -62,7 +62,7 @@ public class NotesRepoImpl implements NotesRepo {
             entityManager.merge(note);
             return true;
         } catch (Exception e) {
-            System.out.println("[ERROR] TileDataRepoImpl createNewNote: Unable to create new note.");
+            System.out.println("[ERROR] NotesRepoImpl createNewNote: Unable to create new note.");
             System.out.println(note.toString());
             e.printStackTrace();
             return false;
@@ -78,11 +78,11 @@ public class NotesRepoImpl implements NotesRepo {
                 return true;
             }
             else{
-                System.out.println("[ERROR] TileDataRepoImpl deleteNoteById: Note not found.");
+                System.out.println("[ERROR] NotesRepoImpl deleteNoteById: Note not found.");
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("[ERROR] TileDataRepoImpl deleteNoteById: Unable to delete note.");
+            System.out.println("[ERROR] NotesRepoImpl deleteNoteById: Unable to delete note.");
             e.printStackTrace();
             return false;
         }

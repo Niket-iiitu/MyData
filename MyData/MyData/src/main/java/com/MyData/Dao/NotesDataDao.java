@@ -20,7 +20,7 @@ public class NotesDataDao {
     private String title;
     @Column(name="category")
     private String category;
-    @Column(name="data")
+    @Column(name="data", columnDefinition = "TEXT")
     private String data;
     @Column(name="tags")
     @Convert(converter = TagsConverter.class)
