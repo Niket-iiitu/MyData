@@ -3,9 +3,9 @@ package com.MyData.Service;
 import com.MyData.Dto.AuthSession;
 import com.MyData.Repository.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     Authentication authentication;
