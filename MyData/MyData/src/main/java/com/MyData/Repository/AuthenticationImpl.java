@@ -4,6 +4,7 @@ import com.MyData.Dao.UserInfo;
 import com.MyData.Dto.AuthSession;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,23 +20,22 @@ public class AuthenticationImpl implements Authentication{
     ApplicationParameterRepository applicationParameterRepository;
 
     @Override
-    public boolean emailIdPresent(String emailId) {
-        UserInfo userInfo = entityManager.find(UserInfo.class, emailId);
+    @Transactional
+    public boolean emailIdPresent(String email) {
+        String query = "SELECT u FROM UserInfo u WHERE u.email = :email";
+        UserInfo userInfo = getUserByEmailId(email);
         return userInfo != null;
     }
 
     @Override
+    @Transactional
     public boolean registerUser(String name, String emailId, String password) {
         UserInfo userInfo = new UserInfo();
         userInfo.setName(name);
-        userInfo.setUid(emailId);
+        userInfo.setEmail(emailId);
         userInfo.setPassword(password);
-        userInfo = entityManager.merge(userInfo);
-        if(userInfo != null) {
-            return true;
-        } else {
-            return false;
-        }
+        entityManager.persist(userInfo);
+        return userInfo.getId() != null;
     }
 
     private String generateAlphaNumericString() {
@@ -49,9 +49,19 @@ public class AuthenticationImpl implements Authentication{
         return result.toString();
     }
 
+    private UserInfo getUserByEmailId(String emailId) {
+        String query = "SELECT u FROM UserInfo u WHERE u.email = :email";
+        return entityManager.createQuery(query, UserInfo.class)
+                .setParameter("email", emailId)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+    }
+
     @Override
+    @Transactional
     public AuthSession firstLogin(String emailId, String password) {
-        UserInfo userInfo = entityManager.find(UserInfo.class, emailId);
+        UserInfo userInfo = getUserByEmailId(emailId);
         AuthSession authSession = new AuthSession();
         if(userInfo != null && userInfo.getPassword().equals(password)) {
             userInfo.setLastLogin(LocalDateTime.now());
@@ -74,6 +84,7 @@ public class AuthenticationImpl implements Authentication{
     }
 
     @Override
+    @Transactional
     public boolean checkSession(String uid, String sessionId) {
         UserInfo userInfo = entityManager.find(UserInfo.class, uid);
         if(userInfo != null && userInfo.getSessionId().equals(sessionId) && userInfo.getExpiry().isAfter(LocalDateTime.now()) && userInfo.getSessionId()!=null) {
@@ -84,6 +95,7 @@ public class AuthenticationImpl implements Authentication{
     }
 
     @Override
+    @Transactional
     public boolean updateTimeout(String uid) {
         UserInfo userInfo = entityManager.find(UserInfo.class, uid);
         if(userInfo != null) {
@@ -97,6 +109,7 @@ public class AuthenticationImpl implements Authentication{
     }
 
     @Override
+    @Transactional
     public boolean logout(String uid, String sessionId) {
         UserInfo userInfo = entityManager.find(UserInfo.class, uid);
         if(userInfo != null && userInfo.getSessionId().equals(sessionId)) {

@@ -1,5 +1,7 @@
+import React, { useState } from 'react';
 import './App.css';
 import TileContainer from './Components/TileContainer.js';
+import Login from './Components/Login.js';
 import {getPing} from './API/HealthCheck.js';
 
 async function serverHealthCheck() {
@@ -15,6 +17,8 @@ async function serverHealthCheck() {
 }
 
 function App() {
+    const [authenticated, setAuthenticated] = useState(false);
+
     serverHealthCheck();
     return (
         <div className="App">
@@ -22,7 +26,15 @@ function App() {
                 <span>IdeaNotes</span>
                 <img src="/LightBulb.png" alt="Lightbulb" className="lightbulb-icon" />
             </div>
-            <TileContainer/>
+            {authenticated ? (
+                <TileContainer/>
+            ) : (
+                <Login onLogin={(user) => {
+                    setAuthenticated(true);
+                }}/>
+            )
+
+            }
         </div>
     );
 }
