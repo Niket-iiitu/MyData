@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
-import {signUp, logIn} from '../API/Authentication.js'
+import {signUp, logIn, autoLogin} from '../API/Authentication.js'
 
 function Login({ onLogin }) {
     const [isSignup, setIsSignup] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+
+    useEffect(() => {
+        if(localStorage.getItem('IdeaNotesUid') && localStorage.getItem('IdeaNotesSessionId')){
+                autoLogin(localStorage.getItem('IdeaNotesUid'), localStorage.getItem('IdeaNotesSessionId')).then((res)=>{
+                    if(res.status === "AUTHORISED"){
+                        onLogin(res.data);
+                    }
+                    else{
+                        localStorage.removeItem('IdeaNotesUid');
+                        localStorage.removeItem('IdeaNotesSessionId');
+                    }
+                }).catch(err => {
+                    localStorage.removeItem('IdeaNotesUid');
+                    localStorage.removeItem('IdeaNotesSessionId');
+                });
+            }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

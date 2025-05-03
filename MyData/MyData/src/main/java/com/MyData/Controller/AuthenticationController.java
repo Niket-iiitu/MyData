@@ -113,4 +113,36 @@ public class AuthenticationController {
         }
         return dataTransferWrapper;
     }
+
+    @PostMapping(value = "/autoLogin")
+    public DataTransferWrapper autoLogin(@RequestBody Map<String, String> requestBody) {
+        AuthSession authSession = new AuthSession();
+        DataTransferWrapper dataTransferWrapper = new DataTransferWrapper();
+        String uid = requestBody.get("uid");
+        String sessionId = requestBody.get("sessionId");
+        if(StringUtil.isNullOrEmpty(uid) || StringUtil.isNullOrEmpty(sessionId)) {
+            authSession.setStatus(AuthSession.State.FAILED.toString());
+            authSession.setMessage("uid or sessionId cannot be empty.");
+            loggingService.logRequest("", authSession.toString(), "AUTO_LOGIN", "", "FAILED");
+            dataTransferWrapper.setStatus("SUCCESS");
+            dataTransferWrapper.setData(authSession);
+            return dataTransferWrapper;
+        }
+        String request = uid + "|" + sessionId;
+        try{
+            authSession = authenticationService.validateAndUpdateSession(uid, sessionId);
+            loggingService.logRequest(request, authSession.toString(), "AUTO_LOGIN", authSession.getUid(), authSession.getStatus());
+            dataTransferWrapper.setStatus("SUCCESS");
+            dataTransferWrapper.setData(authSession);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            authSession.setStatus(AuthSession.State.FAILED.toString());
+            authSession.setMessage("Error occurred during signup: " + e.getMessage());
+            loggingService.logRequest(request, authSession.toString(), "AUTO_LOGIN", "", "FAILED");
+            dataTransferWrapper.setStatus("ERROR");
+            dataTransferWrapper.setData(authSession);
+        }
+        return dataTransferWrapper;
+    }
 }

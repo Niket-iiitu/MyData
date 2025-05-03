@@ -86,18 +86,25 @@ public class AuthenticationImpl implements Authentication{
     @Override
     @Transactional
     public boolean checkSession(String uid, String sessionId) {
-        UserInfo userInfo = entityManager.find(UserInfo.class, uid);
-        if(userInfo != null && userInfo.getSessionId().equals(sessionId) && userInfo.getExpiry().isAfter(LocalDateTime.now()) && userInfo.getSessionId()!=null) {
-            return true;
-        } else {
-            return false;
-        }
+        String query = "SELECT u FROM UserInfo u WHERE u.uid = :uid AND u.sessionId = :sessionId";
+        UserInfo userInfo = entityManager.createQuery(query, UserInfo.class)
+                .setParameter("uid", uid)
+                .setParameter("sessionId", sessionId)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
+        return userInfo != null && userInfo.getExpiry().isAfter(LocalDateTime.now());
     }
 
     @Override
     @Transactional
     public boolean updateTimeout(String uid) {
-        UserInfo userInfo = entityManager.find(UserInfo.class, uid);
+        String query = "SELECT u FROM UserInfo u WHERE u.uid = :uid";
+        UserInfo userInfo = entityManager.createQuery(query, UserInfo.class)
+                .setParameter("uid", uid)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
         if(userInfo != null) {
             int expiryTime = Integer.getInteger(applicationParameterRepository.findValueByParameter("SESSION_TIMEOUT"), 5);
             userInfo.setExpiry(LocalDateTime.now().plusMinutes(expiryTime));
