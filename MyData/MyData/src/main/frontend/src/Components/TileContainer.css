@@ -60,3 +60,19 @@
   background-color: white;
   color: #FFD700
 }
+
+.logout-button {
+    padding: 10px 20px;
+    background-color: #e11d48;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 20px;
+    padding: 10px 14px 10px 14px
+}
+
+.logout-button:hover {
+    background-color: #be123c;
+}

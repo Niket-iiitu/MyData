@@ -27,9 +27,11 @@ function App() {
                 <img src="/LightBulb.png" alt="Lightbulb" className="lightbulb-icon" />
             </div>
             {authenticated ? (
-                <TileContainer/>
+                <TileContainer onLogout={() => {
+                    setAuthenticated(false);
+                }}/>
             ) : (
-                <Login onLogin={(user) => {
+                <Login onLogin={() => {
                     setAuthenticated(true);
                 }}/>
             )

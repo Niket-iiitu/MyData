@@ -84,10 +84,12 @@ public class AuthenticationController {
         return dataTransferWrapper;
     }
 
-    @PostMapping(value = "/logout")
-    public DataTransferWrapper logout(@RequestBody String uid, @RequestBody String sessionId) {
+    @PostMapping(value = "/logOut")
+    public DataTransferWrapper logout(@RequestBody Map<String, String> requestBody) {
         AuthSession authSession = new AuthSession();
         DataTransferWrapper dataTransferWrapper = new DataTransferWrapper();
+        String uid = requestBody.get("uid");
+        String sessionId = requestBody.get("sessionId");
         if(StringUtil.isNullOrEmpty(uid) || StringUtil.isNullOrEmpty(sessionId)) {
             authSession.setStatus(AuthSession.State.FAILED.toString());
             authSession.setMessage("User ID or session ID cannot be empty.");

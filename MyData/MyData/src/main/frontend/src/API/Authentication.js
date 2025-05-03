@@ -99,3 +99,36 @@ export async function autoLogin(uid, sessionId) {
     throw error;
   }
 }
+
+export async function logOut(uid, sessionId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/logOut`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "uid": uid,
+        "sessionId": sessionId
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to Log Out');
+    }
+
+    const res = await response.json();
+
+    if (res.status === "SUCCESS") {
+      return res.data;
+    } else if (res.status === "ERROR") {
+      return res.errorMessage || 'Server returned an error';
+    } else {
+      return 'Unexpected error occurred. Please try again later.';
+    }
+
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+}

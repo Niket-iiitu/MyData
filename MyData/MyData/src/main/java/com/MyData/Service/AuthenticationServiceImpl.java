@@ -67,7 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return authSession;
         }
         if(authentication.logout(uid, sessionId)){
-            authSession.setStatus(AuthSession.State.REGISTERED.toString());
+            authSession.setStatus(AuthSession.State.LOGGED_OUT.toString());
             authSession.setMessage("Logged out successfully.");
         } else {
             authSession.setStatus(AuthSession.State.TIMEOUT.toString());

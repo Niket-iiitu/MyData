@@ -118,7 +118,13 @@ public class AuthenticationImpl implements Authentication{
     @Override
     @Transactional
     public boolean logout(String uid, String sessionId) {
-        UserInfo userInfo = entityManager.find(UserInfo.class, uid);
+        String query = "SELECT u FROM UserInfo u WHERE u.uid = :uid AND u.sessionId = :sessionId";
+        UserInfo userInfo = entityManager.createQuery(query, UserInfo.class)
+                .setParameter("uid", uid)
+                .setParameter("sessionId", sessionId)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
         if(userInfo != null && userInfo.getSessionId().equals(sessionId)) {
             userInfo.setExpiry(LocalDateTime.now().minusMinutes(5));
             userInfo.setSessionId(null);

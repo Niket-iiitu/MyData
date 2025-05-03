@@ -12,6 +12,7 @@ public class AuthSession {
         AUTHORISED,
         TIMEOUT,
         FAILED,
+        LOGGED_OUT,
         REGISTERED
     }
 }

@@ -12,7 +12,7 @@ function Login({ onLogin }) {
         if(localStorage.getItem('IdeaNotesUid') && localStorage.getItem('IdeaNotesSessionId')){
                 autoLogin(localStorage.getItem('IdeaNotesUid'), localStorage.getItem('IdeaNotesSessionId')).then((res)=>{
                     if(res.status === "AUTHORISED"){
-                        onLogin(res.data);
+                        onLogin();
                     }
                     else{
                         localStorage.removeItem('IdeaNotesUid');
@@ -45,7 +45,7 @@ function Login({ onLogin }) {
                 if(res.status === "AUTHORISED"){
                     localStorage.setItem('IdeaNotesUid', res.uid);
                     localStorage.setItem('IdeaNotesSessionId', res.sessionId);
-                    onLogin(res.data);
+                    onLogin();
                 }
                 else{
                     alert(res.errorMessage || 'Invalid credentials');

@@ -4,8 +4,9 @@ import DataPopup from './DataPopup';
 import TagModal from './TagModel';
 import './TileContainer.css';
 import { fetchTiles, fetchCategories } from '../API/Data.js';
+import { logOut } from '../API/Authentication.js';
 
-function TileContainer() {
+function TileContainer({ onLogout }) {
   const [tiles, setTiles] = useState([]);
   const [filteredTiles, setFilteredTiles] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -33,6 +34,21 @@ function TileContainer() {
             setFilteredTiles(data);
         }).catch(error => alert(error.message));
     }
+  }
+
+  const handelLogout = () => {
+    const uid = localStorage.getItem("IdeaNotesUid");
+    const sessionId = localStorage.getItem("IdeaNotesSessionId");
+    logOut(uid, sessionId).then(res => {
+        if(res.status === "LOGGED_OUT"){
+            localStorage.removeItem("IdeaNotesUid");
+            localStorage.removeItem("IdeaNotesSessionId");
+            onLogout();
+        }
+        else{
+            alert(res.message);
+        }
+    }).catch(err => alert(err.message));
   }
 
   useEffect(() => {
@@ -142,6 +158,9 @@ function TileContainer() {
               onClose={() => setIsModalOpen(false)}
             />
           )}
+        </div>
+        <div>
+          <button onClick={handelLogout} className="logout-button">Logout</button>
         </div>
       </div>
       <div className="tile-container">
