@@ -89,9 +89,3 @@ All backend actions are logged for tracking:
 - UI enhancements
 - Role-based access control
 - Search across categories
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
