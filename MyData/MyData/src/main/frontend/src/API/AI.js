@@ -6,6 +6,8 @@ export async function generateSummery(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'uid': localStorage.getItem('IdeaNotesUid'),
+        'session-id': localStorage.getItem('IdeaNotesSessionId')
       },
       body: JSON.stringify({ data }),
     });

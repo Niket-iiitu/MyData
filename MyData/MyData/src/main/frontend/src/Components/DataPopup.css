@@ -60,7 +60,8 @@
 
 .tags-box {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex-direction: row;
   gap: 8px;
 }
 
@@ -71,6 +72,7 @@
   font-size: 14px;
   align-item: center;
   font-weight: bold;
+  display: flex;
 }
 
 .popup-title-input {

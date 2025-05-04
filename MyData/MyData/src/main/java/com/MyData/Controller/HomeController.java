@@ -1,7 +1,9 @@
 package com.MyData.Controller;
 
 import com.MyData.Dao.NotesDataDao;
+import com.MyData.Dto.AuthSession;
 import com.MyData.Dto.DataTransferWrapper;
+import com.MyData.Service.AuthenticationService;
 import com.MyData.Service.LoggingService;
 import com.MyData.Service.NotesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +22,29 @@ public class HomeController {
     @Autowired
     LoggingService loggingService;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     @GetMapping(value = "/ping")
     private String pingCheck(){
         return "Server Active";
     }
 
     @PostMapping(value = "/tileList")
-    private DataTransferWrapper fetchTileList(@RequestBody Map<String, String> requestBody){
+    private DataTransferWrapper fetchTileList(@RequestHeader Map<String, String> requestHeader, @RequestBody Map<String, String> requestBody){
         String filter = requestBody.get("filter");
         DataTransferWrapper res = new DataTransferWrapper();
         List<NotesDataDao> sampelList = new ArrayList<>();
-        String userId = "1001";
+        String userId = requestHeader.get("uid");
+        String sessionId = requestHeader.get("session-id");
+
+        AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
+        if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
+            res.setStatus("ERROR");
+            res.setErrorMessage("Session expired. Please login again.");
+            loggingService.logRequest(requestBody.toString(), res.toString(), "FETCH_NOTE_LIST", userId, "ERROR");
+            return res;
+        }
 
         try{
             sampelList = notesService.getTileDetailsByUserAndFilter(userId,filter);
@@ -50,10 +64,19 @@ public class HomeController {
     }
 
     @PostMapping(value = "/fetchCategories")
-    private DataTransferWrapper fetchCategoryList(){
+    private DataTransferWrapper fetchCategoryList(@RequestHeader Map<String, String> requestHeader){
         DataTransferWrapper res = new DataTransferWrapper();
         List<String> sampelList = new ArrayList<>();
-        String userId = "1001";
+        String userId = requestHeader.get("uid");
+        String sessionId = requestHeader.get("session-id");
+
+        AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
+        if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
+            res.setStatus("ERROR");
+            res.setErrorMessage("Session expired. Please login again.");
+            loggingService.logRequest("", res.toString(), "FETCH_CATEGORIES", userId, "ERROR");
+            return res;
+        }
 
         try{
             sampelList = notesService.getListOfCategories(userId);
@@ -73,7 +96,7 @@ public class HomeController {
     }
 
     @PostMapping(value = "/createAndUpdateNote")
-    private DataTransferWrapper createAndUpdateNote(@RequestBody Map<String, String> requestBody){
+    private DataTransferWrapper createAndUpdateNote(@RequestHeader Map<String, String> requestHeader, @RequestBody Map<String, String> requestBody){
         DataTransferWrapper res = new DataTransferWrapper();
         try{
             String noteId = requestBody.get("noteId");
@@ -82,7 +105,16 @@ public class HomeController {
             String data = requestBody.get("data");
             String tags = requestBody.get("tags");
             List<String> listOfTags = List.of(tags.split("\\|"));
-            String userId = "1001";
+            String userId = requestHeader.get("uid");
+            String sessionId = requestHeader.get("session-id");
+
+            AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
+            if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
+                res.setStatus("ERROR");
+                res.setErrorMessage("Session expired. Please login again.");
+                loggingService.logRequest("", res.toString(), "CREATE_UPDATE_NOTE", userId, "ERROR");
+                return res;
+            }
 
             if(Objects.equals(noteId, "")){
                 System.out.println("New chat being created");
@@ -121,12 +153,21 @@ public class HomeController {
     }
 
     @PostMapping(value = "/deleteNote")
-    private DataTransferWrapper deleteNote(@RequestBody Map<String, String> requestBody){
+    private DataTransferWrapper deleteNote(@RequestHeader Map<String, String> requestHeader, @RequestBody Map<String, String> requestBody){
         DataTransferWrapper res = new DataTransferWrapper();
         String noteId = requestBody.get("noteId");
-        try{
-            String userId = "1001";
+        String userId = requestHeader.get("uid");
+        String sessionId = requestHeader.get("session-id");
 
+        AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
+        if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
+            res.setStatus("ERROR");
+            res.setErrorMessage("Session expired. Please login again.");
+            loggingService.logRequest("", res.toString(), "DELETE_NOTE", userId, "ERROR");
+            return res;
+        }
+
+        try{
             if(Objects.equals(noteId, null)){
                 res.setStatus("ERROR");
                 res.setErrorMessage("Invalid Note ID");

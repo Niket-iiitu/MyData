@@ -1,11 +1,13 @@
 import { API_BASE_URL } from '../config/Constants';
 
-export async function fetchTiles(filter = 'Default') {
+export async function fetchNotes(filter = 'Default') {
   try {
     const response = await fetch(`${API_BASE_URL}/tileList`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'uid': localStorage.getItem('IdeaNotesUid'),
+        'session-id': localStorage.getItem('IdeaNotesSessionId')
       },
       body: JSON.stringify({ filter }),
     });
@@ -38,6 +40,8 @@ export async function fetchCategories() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'uid': localStorage.getItem('IdeaNotesUid'),
+        'session-id': localStorage.getItem('IdeaNotesSessionId')
       },
       body: "",
     });
@@ -70,6 +74,8 @@ export async function updateNote(note) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'uid': localStorage.getItem('IdeaNotesUid'),
+        'session-id': localStorage.getItem('IdeaNotesSessionId')
       },
       body: JSON.stringify(note),
     });
@@ -102,6 +108,8 @@ export async function createNote(note) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'uid': localStorage.getItem('IdeaNotesUid'),
+        'session-id': localStorage.getItem('IdeaNotesSessionId')
       },
       body: JSON.stringify(note),
     });
@@ -134,6 +142,8 @@ export async function deleteNote(noteId) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'uid': localStorage.getItem('IdeaNotesUid'),
+        'session-id': localStorage.getItem('IdeaNotesSessionId')
       },
       body: JSON.stringify({ noteId }),
     });

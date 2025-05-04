@@ -1,15 +1,19 @@
 package com.MyData.Controller;
 
 import com.MyData.Dto.AiResponse;
+import com.MyData.Dto.AuthSession;
 import com.MyData.Dto.DataTransferWrapper;
 import com.MyData.Service.AIService;
+import com.MyData.Service.AuthenticationService;
 import com.MyData.Service.LoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 public class AIController {
@@ -19,11 +23,23 @@ public class AIController {
     @Autowired
     LoggingService loggingService;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     @PostMapping(value = "/summarise")
-    private DataTransferWrapper generateSummery(@RequestBody Map<String, String> requestBody){
+    private DataTransferWrapper generateSummery(@RequestHeader Map<String, String> requestHeader, @RequestBody Map<String, String> requestBody){
         String data = requestBody.get("data");
         DataTransferWrapper res = new DataTransferWrapper();
-        String userId = "1001";
+        String userId = requestHeader.get("uid");
+        String sessionId = requestHeader.get("session-id");
+
+        AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
+        if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
+            res.setStatus("ERROR");
+            res.setErrorMessage("Session expired. Please login again.");
+            loggingService.logRequest("", res.toString(), "DELETE_NOTE", userId, "ERROR");
+            return res;
+        }
 
         try{
             AiResponse noteData= aiService.processResponse(data);

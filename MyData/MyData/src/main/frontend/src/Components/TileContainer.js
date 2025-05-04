@@ -3,15 +3,15 @@ import DataTile from './DataTile';
 import DataPopup from './DataPopup';
 import TagModal from './TagModel';
 import './TileContainer.css';
-import { fetchTiles, fetchCategories } from '../API/Data.js';
+import { fetchNotes, fetchCategories } from '../API/Data.js';
 import { logOut } from '../API/Authentication.js';
 
 function TileContainer({ onLogout }) {
-  const [tiles, setTiles] = useState([]);
-  const [filteredTiles, setFilteredTiles] = useState([]);
+  const [notes, setNotes] = useState([]);
+  const [filteredNotes, setFilteredNotes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('Default');
-  const [selectedTile, setSelectedTile] = useState(null);
+  const [selectedNote, setSelectedNote] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tagList, setTagList] = useState(["Test1", "Test2", "Test3"]);
@@ -25,14 +25,15 @@ function TileContainer({ onLogout }) {
   const togglePopup = () => {
     setCreateNote(!createNote);
     if(createNote===true){
-        setSelectedTile(null);
+        setSelectedNote(null);
         fetchCategories()
             .then(data => setCategories(data))
             .catch(err => alert(err.message));
-        fetchTiles(selectedCategory).then(data => {
-            setTiles(data);
-            setFilteredTiles(data);
+        fetchNotes(selectedCategory).then(data => {
+            setNotes(data);
+            setFilteredNotes(data);
         }).catch(error => alert(error.message));
+
     }
   }
 
@@ -58,11 +59,11 @@ function TileContainer({ onLogout }) {
       .then(data => setCategories(data))
       .catch(err => alert(err.message));
 
-    // Fetch all tiles
-    fetchTiles()
+    // Fetch all Notes
+    fetchNotes()
       .then(data => {
-        setTiles(data);
-        setFilteredTiles(data);
+        setNotes(data);
+        setFilteredNotes(data);
         const tagSet = new Set();
 
         for (const note of data) {
@@ -87,42 +88,42 @@ function TileContainer({ onLogout }) {
 
   useEffect(() => {
     if(selectedTags.length>0){
-        const newTiles = tiles.filter(tile =>
-            selectedTags.every(tag => tile.tags.includes(tag))
+        const newNotes = notes.filter(note =>
+            selectedTags.every(tag => note.tags.includes(tag))
         );
-        setFilteredTiles(newTiles);
+        setFilteredNotes(newNotes);
     }
     else{
-       setFilteredTiles(tiles);
+       setFilteredNotes(notes);
     }
-  }, [selectedTags, tiles]);
+  }, [selectedTags, notes]);
 
-  const handleClick = (tile) => {
-    setSelectedTile(tile);
+  const handleClick = (note) => {
+    setSelectedNote(note);
   };
 
   const closePopup = (update=false) => {
     if(update){
-        setSelectedTile(null);
+        setSelectedNote(null);
         fetchCategories()
             .then(data => setCategories(data))
             .catch(err => alert(err.message));
-        fetchTiles(selectedCategory).then(data => {
-            setTiles(data);
-            setFilteredTiles(data);
+        fetchNotes(selectedCategory).then(data => {
+            setNotes(data);
+            setFilteredNotes(data);
         }).catch(error => alert(error.message));
     }
     else{
-        setSelectedTile(null);
+        setSelectedNote(null);
     }
   };
 
   const handleCategoryChange = (e) => {
     const category = e.target.value;
     setSelectedCategory(category);
-    fetchTiles(category).then(data => {
-      setTiles(data);
-      setFilteredTiles(data);
+    fetchNotes(category).then(data => {
+      setNotes(data);
+      setFilteredNotes(data);
     }).catch(error => alert(error.message));
   };
 
@@ -164,16 +165,16 @@ function TileContainer({ onLogout }) {
         </div>
       </div>
       <div className="tile-container">
-        {filteredTiles.map((tile, index) => (
-          <DataTile key={index} title={tile.title} onClick={() => handleClick(tile)} />
+        {filteredNotes.map((note, index) => (
+          <DataTile key={index} title={note.title} onClick={() => handleClick(note)} />
         ))}
-        {selectedTile && (
+        {selectedNote && (
           <DataPopup
-            noteId={selectedTile.id}
-            title={selectedTile.title}
-            category={selectedTile.category}
-            tags={selectedTile.tags}
-            data={selectedTile.data}
+            noteId={selectedNote.id}
+            title={selectedNote.title}
+            category={selectedNote.category}
+            tags={selectedNote.tags}
+            data={selectedNote.data}
             categoryList={categories}
             onClose={closePopup}
           />

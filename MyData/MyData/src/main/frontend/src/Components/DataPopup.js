@@ -151,35 +151,35 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
             />
           )}
 
-        <div className="tags-box">
-          {newTags.map((tag, index) => (
-            (tag.length > 0) && (
-              <span key={index} className="tag-item">
-                {tag}
-                <button
-                  className="delete-tag-button"
-                  onClick={() => {
-                    const updatedTags = tags.filter((_, i) => i !== index);
-                    setNewTags(updatedTags); // Update the tags state
-                  }}
-                >
-                  ×
-                </button>
-              </span>
-            )
-          ))}
-          <input
-            type="text"
-            className="add-tag-input"
-            placeholder="Add a tag"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && e.target.value.trim() !== '') {
-                setNewTags([...newTags, e.target.value.trim()]); // Add new tag
-                e.target.value = ''; // Clear input
-              }
-            }}
-          />
-        </div>
+            <div className="tags-box">
+              {newTags.map((tag, index) => (
+                (tag.length > 0) && (
+                  <span key={index} className="tag-item">
+                    {tag}
+                    <button
+                      className="delete-tag-button"
+                      onClick={() => {
+                        const updatedTags = tags.filter((_, i) => i !== index);
+                        setNewTags(updatedTags); // Update the tags state
+                      }}
+                    >
+                      ×
+                    </button>
+                  </span>
+                )
+              ))}
+              <input
+                type="text"
+                className="add-tag-input"
+                placeholder="Add a tag"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && e.target.value.trim() !== '') {
+                    setNewTags([...newTags, e.target.value.trim()]); // Add new tag
+                    e.target.value = ''; // Clear input
+                  }
+                }}
+              />
+            </div>
         </div>
 
         <div className="popup-content">
