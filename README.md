@@ -64,6 +64,7 @@ MyData is a note management platform that helps users create, organize, and mana
 ---
 
 ## 🔒 Auth Interceptor
+
   - An Interseptor is used to authorise every API call to backend that fetches data, or uses AI services.
   - Autherisation is used using `User ID` and `Session ID` that is stored in header of every such request.
   - It also checks if `Session ID` being passed has expired or not. 
@@ -91,8 +92,18 @@ All backend actions are logged for tracking:
 
 ---
 
+## 📘 Swagger / OpenAPI Documentation
+
+Springdoc OpenAPI has been integrated for generating interactive documentation:
+
+- UI available at: `http://<host>:<port>/swagger-ui/index.html`.
+- Automatically documents all public APIs.
+
+This makes it easier to test, explore, and debug the backend APIs.
+
+---
+
 ## 🚀 Future Improvements
 
 - UI enhancements
 - Role-based access control
-- Search across categories
