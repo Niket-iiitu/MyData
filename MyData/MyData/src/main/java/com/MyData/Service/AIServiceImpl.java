@@ -40,12 +40,13 @@ public class AIServiceImpl implements AIService {
         String HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/models";
         String API_KEY = "your-hugging-face-api-key-here";
         String responseString = "";
-        try{
+        try {
             API_KEY = applicationParameterRepository.findValueByParameter("AI_KEY");
 
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpPost postRequest = new HttpPost(HUGGINGFACE_API_URL + "/" + model);
             postRequest.setHeader("Authorization", "Bearer " + API_KEY);
+            postRequest.setHeader("Content-Type", "application/json"); // Set Content-Type header
 
             // Create the JSON payload
             JSONObject payload = new JSONObject();
@@ -61,8 +62,7 @@ public class AIServiceImpl implements AIService {
             responseString = EntityUtils.toString(entity);
             response.close();
             httpClient.close();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("[ERROR] AIServiceImpl callHuggingFace: Error occurred while calling Hugging Face API");
             e.printStackTrace();
         }

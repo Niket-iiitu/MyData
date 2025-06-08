@@ -13,17 +13,23 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
 
   const handelSummarize = (e) => {
     console.log("Summarize Note");
-    generateSummery(newData).then((response)=>{
-        if(response.summary!=null && response.summary!=""){
-            setNewData(response.summary);
-        }
-        if(response.title!=null && response.title!=""){
-            setNewTitle(response.title);
-        }
-        if(Array.isArray(response.tags) && response.tags.length > 0){
-            setNewTags(response.tags);
-        }
-    })
+    try{
+        generateSummery(newData).then((response)=>{
+            if(response.summary!=null && response.summary!=""){
+                setNewData(response.summary);
+            }
+            if(response.title!=null && response.title!=""){
+                setNewTitle(response.title);
+            }
+            if(Array.isArray(response.tags) && response.tags.length > 0){
+                setNewTags(response.tags);
+            }
+        })
+    }
+    catch(error){
+        console.error("Error generating summary:", error);
+        alert(error.message || "An error occurred while generating the summary.");
+    }
   }
 
   const handelCancel = (e) => {

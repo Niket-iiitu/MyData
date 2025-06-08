@@ -21,9 +21,9 @@ export async function generateSummery(data) {
     if (res.status === "SUCCESS") {
       return res.data;
     } else if (res.status === "ERROR") {
-      return res.errorMessage || 'Server returned an error';
+      throw new Error(res.errorMessage || 'Server returned an error');
     } else {
-      return 'Unexpected error occurred. Please try again later.';
+      throw new Error('Unexpected error occurred. Please try again later.');
     }
 
   } catch (error) {
