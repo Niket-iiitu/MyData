@@ -47,15 +47,6 @@ public class HomeController {
         DataTransferWrapper res = new DataTransferWrapper();
         List<NotesDataDao> sampelList = new ArrayList<>();
         String userId = requestHeader.get("uid");
-        String sessionId = requestHeader.get("session-id");
-
-        AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
-        if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
-            res.setStatus("ERROR");
-            res.setErrorMessage("Session expired. Please login again.");
-            loggingService.logRequest(requestBody.toString(), res.toString(), "FETCH_NOTE_LIST", userId, "ERROR");
-            return res;
-        }
 
         try{
             sampelList = notesService.getTileDetailsByUserAndFilter(userId,filter);
@@ -83,15 +74,6 @@ public class HomeController {
         DataTransferWrapper res = new DataTransferWrapper();
         List<String> sampelList = new ArrayList<>();
         String userId = requestHeader.get("uid");
-        String sessionId = requestHeader.get("session-id");
-
-        AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
-        if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
-            res.setStatus("ERROR");
-            res.setErrorMessage("Session expired. Please login again.");
-            loggingService.logRequest("", res.toString(), "FETCH_CATEGORIES", userId, "ERROR");
-            return res;
-        }
 
         try{
             sampelList = notesService.getListOfCategories(userId);
@@ -125,15 +107,6 @@ public class HomeController {
             String tags = requestBody.get("tags");
             List<String> listOfTags = List.of(tags.split("\\|"));
             String userId = requestHeader.get("uid");
-            String sessionId = requestHeader.get("session-id");
-
-            AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
-            if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
-                res.setStatus("ERROR");
-                res.setErrorMessage("Session expired. Please login again.");
-                loggingService.logRequest("", res.toString(), "CREATE_UPDATE_NOTE", userId, "ERROR");
-                return res;
-            }
 
             if(Objects.equals(noteId, "")){
                 System.out.println("New chat being created");
@@ -180,15 +153,6 @@ public class HomeController {
         DataTransferWrapper res = new DataTransferWrapper();
         String noteId = requestBody.get("noteId");
         String userId = requestHeader.get("uid");
-        String sessionId = requestHeader.get("session-id");
-
-        AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
-        if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
-            res.setStatus("ERROR");
-            res.setErrorMessage("Session expired. Please login again.");
-            loggingService.logRequest("", res.toString(), "DELETE_NOTE", userId, "ERROR");
-            return res;
-        }
 
         try{
             if(Objects.equals(noteId, null)){

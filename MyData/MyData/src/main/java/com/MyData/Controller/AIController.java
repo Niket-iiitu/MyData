@@ -42,15 +42,6 @@ public class AIController {
         String data = requestBody.get("data");
         DataTransferWrapper res = new DataTransferWrapper();
         String userId = requestHeader.get("uid");
-        String sessionId = requestHeader.get("session-id");
-
-        AuthSession authSession = authenticationService.validateAndUpdateSession(userId, sessionId);
-        if(Objects.equals(authSession.getStatus(), "FAILED") || Objects.equals(authSession.getStatus(), "TIMEOUT")){
-            res.setStatus("ERROR");
-            res.setErrorMessage("Session expired. Please login again.");
-            loggingService.logRequest("", res.toString(), "DELETE_NOTE", userId, "ERROR");
-            return res;
-        }
 
         try{
             AiResponse noteData= aiService.processResponse(data);
