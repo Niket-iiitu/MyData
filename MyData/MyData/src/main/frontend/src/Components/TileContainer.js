@@ -22,39 +22,7 @@ function TileContainer({ onLogout }) {
     setIsModalOpen(false);
   };
 
-  const togglePopup = () => {
-    setCreateNote(!createNote);
-    if(createNote===true){
-        setSelectedNote(null);
-        fetchCategories()
-            .then(data => setCategories(data))
-            .catch(err => alert(err.message));
-        fetchNotes(selectedCategory).then(data => {
-            setNotes(data);
-            setFilteredNotes(data);
-        }).catch(error => alert(error.message));
-
-    }
-  }
-
-  const handelLogout = () => {
-    const uid = localStorage.getItem("IdeaNotesUid");
-    const sessionId = localStorage.getItem("IdeaNotesSessionId");
-    logOut(uid, sessionId).then(res => {
-        if(res.status === "LOGGED_OUT"){
-            localStorage.removeItem("IdeaNotesUid");
-            localStorage.removeItem("IdeaNotesSessionId");
-            onLogout();
-        }
-        else{
-            alert(res.message);
-        }
-    }).catch(err => alert(err.message));
-  }
-
-  useEffect(() => {
-    // Fetch categories
-    //TODO: Add Auth ID
+  const updatePageData = () => {
     fetchCategories()
       .then(data => setCategories(data))
       .catch(err => alert(err.message));
@@ -84,6 +52,32 @@ function TileContainer({ onLogout }) {
         alert(error.message);
         console.log(error);
       });
+  }
+
+  const togglePopup = (update = false) => {
+    setCreateNote(!createNote);
+    if(update){
+        updatePageData();
+    }
+  }
+
+  const handelLogout = () => {
+    const uid = localStorage.getItem("IdeaNotesUid");
+    const sessionId = localStorage.getItem("IdeaNotesSessionId");
+    logOut(uid, sessionId).then(res => {
+        if(res.status === "LOGGED_OUT"){
+            localStorage.removeItem("IdeaNotesUid");
+            localStorage.removeItem("IdeaNotesSessionId");
+            onLogout();
+        }
+        else{
+            alert(res.message);
+        }
+    }).catch(err => alert(err.message));
+  }
+
+  useEffect(() => {
+    updatePageData();
   }, []);
 
   useEffect(() => {
