@@ -6,6 +6,8 @@ import com.MyData.Dto.DataTransferWrapper;
 import com.MyData.Service.AuthenticationService;
 import com.MyData.Service.LoggingService;
 import com.MyData.Service.NotesService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
+@Tag(name = "Notes", description = "APIs for notes functionalities.")
 public class HomeController {
     @Autowired
     NotesService notesService;
@@ -26,11 +29,19 @@ public class HomeController {
     AuthenticationService authenticationService;
 
     @GetMapping(value = "/ping")
+    @Operation(
+            summary = "Ping Check",
+            description = "This API to check if UI is able to connect with server."
+    )
     private String pingCheck(){
         return "Server Active";
     }
 
     @PostMapping(value = "/tileList")
+    @Operation(
+            summary = "Fetch List Of Notes",
+            description = "This API fetches the list of notes by user and categories."
+    )
     private DataTransferWrapper fetchTileList(@RequestHeader Map<String, String> requestHeader, @RequestBody Map<String, String> requestBody){
         String filter = requestBody.get("filter");
         DataTransferWrapper res = new DataTransferWrapper();
@@ -64,6 +75,10 @@ public class HomeController {
     }
 
     @PostMapping(value = "/fetchCategories")
+    @Operation(
+            summary = "Fetch List Of Categories",
+            description = "This API fetches the list of categories by user."
+    )
     private DataTransferWrapper fetchCategoryList(@RequestHeader Map<String, String> requestHeader){
         DataTransferWrapper res = new DataTransferWrapper();
         List<String> sampelList = new ArrayList<>();
@@ -96,6 +111,10 @@ public class HomeController {
     }
 
     @PostMapping(value = "/createAndUpdateNote")
+    @Operation(
+            summary = "Create or Update Note",
+            description = "This API creates a new note or updates an existing note based on the provided data."
+    )
     private DataTransferWrapper createAndUpdateNote(@RequestHeader Map<String, String> requestHeader, @RequestBody Map<String, String> requestBody){
         DataTransferWrapper res = new DataTransferWrapper();
         try{
@@ -153,6 +172,10 @@ public class HomeController {
     }
 
     @PostMapping(value = "/deleteNote")
+    @Operation(
+            summary = "Delete Note",
+            description = "This API deletes a note based on the provided note ID."
+    )
     private DataTransferWrapper deleteNote(@RequestHeader Map<String, String> requestHeader, @RequestBody Map<String, String> requestBody){
         DataTransferWrapper res = new DataTransferWrapper();
         String noteId = requestBody.get("noteId");

@@ -5,6 +5,8 @@ import com.MyData.Dto.AuthSession;
 import com.MyData.Dto.DataTransferWrapper;
 import com.MyData.Service.AuthenticationService;
 import com.MyData.Service.LoggingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
+@Tag(name = "Authentication", description = "APIs for user authentication and session management")
 public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
@@ -20,6 +23,10 @@ public class AuthenticationController {
     LoggingService loggingService;
 
     @PostMapping(value = "/logIn")
+    @Operation(
+            summary = "LogIn User",
+            description = "This API authenticates existing users."
+    )
     public DataTransferWrapper login(@RequestBody Map<String, String> requestBody) {
         AuthSession authSession = new AuthSession();
         DataTransferWrapper dataTransferWrapper = new DataTransferWrapper();
@@ -52,6 +59,10 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/signUp")
+    @Operation(
+            summary = "SignUp User",
+            description = "This API used to register new users."
+    )
     public DataTransferWrapper signUp(@RequestBody Map<String, String> requestBody) {
         AuthSession authSession = new AuthSession();
         DataTransferWrapper dataTransferWrapper = new DataTransferWrapper();
@@ -85,6 +96,10 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/logOut")
+    @Operation(
+            summary = "Logout User",
+            description = "This API to logout user."
+    )
     public DataTransferWrapper logout(@RequestBody Map<String, String> requestBody) {
         AuthSession authSession = new AuthSession();
         DataTransferWrapper dataTransferWrapper = new DataTransferWrapper();
@@ -117,6 +132,10 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/autoLogin")
+    @Operation(
+            summary = "Automatic Login for User",
+            description = "Automatically login user if he re-opens the app in short time after logging out or using multiple tabs with same site."
+    )
     public DataTransferWrapper autoLogin(@RequestBody Map<String, String> requestBody) {
         AuthSession authSession = new AuthSession();
         DataTransferWrapper dataTransferWrapper = new DataTransferWrapper();

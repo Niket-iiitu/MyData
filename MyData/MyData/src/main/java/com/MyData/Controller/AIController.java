@@ -6,6 +6,12 @@ import com.MyData.Dto.DataTransferWrapper;
 import com.MyData.Service.AIService;
 import com.MyData.Service.AuthenticationService;
 import com.MyData.Service.LoggingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
+@Tag(name = "AI", description = "APIs for AI functionalities")
 public class AIController {
     @Autowired
     AIService aiService;
@@ -27,6 +34,10 @@ public class AIController {
     AuthenticationService authenticationService;
 
     @PostMapping(value = "/summarise")
+    @Operation(
+            summary = "Summarize Data",
+            description = "This API summarizes the provided data and returns the result."
+    )
     private DataTransferWrapper generateSummery(@RequestHeader Map<String, String> requestHeader, @RequestBody Map<String, String> requestBody){
         String data = requestBody.get("data");
         DataTransferWrapper res = new DataTransferWrapper();
