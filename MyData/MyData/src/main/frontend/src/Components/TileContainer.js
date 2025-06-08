@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DataTile from './DataTile';
 import DataPopup from './DataPopup';
 import TagModal from './TagModel';
-import './TileContainer.css';
+import './CSS/TileContainer.css';
 import { fetchNotes, fetchCategories } from '../API/Data.js';
 import { logOut } from '../API/Authentication.js';
 
@@ -99,13 +99,7 @@ function TileContainer({ onLogout }) {
   const closePopup = (update=false) => {
     if(update){
         setSelectedNote(null);
-        fetchCategories()
-            .then(data => setCategories(data))
-            .catch(err => alert(err.message));
-        fetchNotes(selectedCategory).then(data => {
-            setNotes(data);
-            setFilteredNotes(data);
-        }).catch(error => alert(error.message));
+        updatePageData();
     }
     else{
         setSelectedNote(null);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Login.css';
+import './CSS/Login.css';
 import {signUp, logIn, autoLogin} from '../API/Authentication.js'
 
 function Login({ onLogin }) {

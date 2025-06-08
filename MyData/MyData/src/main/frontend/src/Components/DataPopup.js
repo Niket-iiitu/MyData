@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './DataPopup.css';
+import './CSS/DataPopup.css';
 import {updateNote, createNote, deleteNote} from '../API/Data.js';
 import {generateSummery} from '../API/AI.js';
 
@@ -32,8 +32,8 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
     }
   }
 
-  const handelCancel = (e) => {
-    console.log("Canceling note");
+  const handelDelete = (e) => {
+    console.log("Deleting note");
     deleteNote(noteId).then((message)=> {
         onClose(true);
         alert(message);
@@ -207,7 +207,7 @@ const DataPopup = ({ noteId, title, category, tags, data, categoryList, onClose 
               </>
             ) : (
               <>
-                  <button type="button" className="delete-button" onClick={handelCancel}>
+                  <button type="button" className="delete-button" onClick={handelDelete}>
                     Delete
                   </button>
                   <button type="button" className="update-button" onClick={handelUpdate}>

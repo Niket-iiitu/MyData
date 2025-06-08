@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./TagModel.css"; // Use same CSS file for modal styles
+import "./CSS/TagModel.css"; // Use same CSS file for modal styles
 
 const TagModal = ({ listOfTags, selectedTags, onSave, onClose }) => {
   const [tempTags, setTempTags] = useState(selectedTags);

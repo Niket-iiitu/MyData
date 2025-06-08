@@ -1,5 +1,5 @@
 import React from 'react';
-import './DataTile.css';
+import './CSS/DataTile.css';
 
 function DataTile({ title, onClick }) {
   return (
