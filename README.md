@@ -63,6 +63,13 @@ MyData is a note management platform that helps users create, organize, and mana
 
 ---
 
+## 🔒 Auth Interceptor
+  - An Interseptor is used to authorise every API call to backend that fetches data, or uses AI services.
+  - Autherisation is used using `User ID` and `Session ID` that is stored in header of every such request.
+  - It also checks if `Session ID` being passed has expired or not. 
+
+---
+
 ## 📝 Logging
 
 All backend actions are logged for tracking:
